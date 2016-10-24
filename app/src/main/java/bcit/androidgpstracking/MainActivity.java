@@ -11,6 +11,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
 	LocationManager locationManager;
+	DatabaseHelper myDb;
 
 	TextView output;
 
