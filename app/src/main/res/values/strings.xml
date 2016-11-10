@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AndroidGPSTracking</string>
+    <string name="title_activity_contact_list">ContactListActivity</string>
 </resources>
