@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,6 +21,11 @@ import static android.content.ContentValues.TAG;
 public class MyLocationListener implements LocationListener {
 
 	TextView output;
+	DecimalFormat df;
+	String formattedLongitude;
+	String formattedLatitude;
+	double rawLongitude;
+	double rawLatidude;
 
 	public MyLocationListener() {
 	}
@@ -30,16 +36,39 @@ public class MyLocationListener implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location loc) {
+		df = new DecimalFormat(("#.#####"));
 		Log.d(TAG, "TEST");
 		output.setText("");
 		Toast.makeText(
 				output.getContext(),
 				"Location changed: Lat: " + loc.getLatitude() + " Lng: "
 						+ loc.getLongitude(), Toast.LENGTH_SHORT).show();
-		String longitude = "Longitude: " + loc.getLongitude();
-		Log.v(TAG, longitude);
-		String latitude = "Latitude: " + loc.getLatitude();
-		Log.v(TAG, latitude);
+
+		//JF: Nov 13, 2016
+		//The raw double longitude and latitude variables.
+		//Can use for getters/setters if need be.
+		//If never needed, can be removed from code
+		rawLongitude =  loc.getLongitude();
+		Log.v(TAG, "" + rawLongitude);
+		rawLatidude = loc.getLatitude();
+		Log.v(TAG, "" + rawLatidude);
+
+		/*JF: Nov 13, 2016
+		Extracts the raw longitude and latitude doubles
+		Formats the long/lat as Strings with the correct Compass direction*/
+		formattedLatitude = String.valueOf(df.format(Math.abs(loc.getLatitude())));
+		formattedLongitude = String.valueOf(df.format(Math.abs(loc.getLongitude())));
+
+		if(loc.getLatitude() < 0) {
+			formattedLatitude = formattedLatitude + "S";
+		} else {
+			formattedLatitude = formattedLatitude + "N";
+		}
+		if(loc.getLongitude() <= 0) {
+			formattedLongitude = formattedLongitude + "W";
+		} else {
+			formattedLongitude = formattedLongitude + "E";
+		}
 
         /*------- To get city name from coordinates -------- */
 		String cityName = null;
@@ -55,8 +84,15 @@ public class MyLocationListener implements LocationListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		String s = longitude + "\n" + latitude + "\n\nMy Current City is: "
-				+ cityName;
+
+		//JF: Nov 13, 2016
+		//String now contains google maps query that functions with
+		//Users browser and google maps App
+		String s = 	"Longitude: " + formattedLongitude + "\n" +
+					"Latitude: " + formattedLatitude +
+					"\n\nMy Current City is: " + cityName +
+					"\nhttp://maps.google.ca/maps/place/?q=" +
+				formattedLatitude + "," + formattedLongitude;
 		output.setText(s);
 	}
 
