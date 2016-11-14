@@ -50,6 +50,17 @@ public class MainActivity extends AppCompatActivity {
 		//String[] names = {"", ""};
 		//numbers = getContactNumber(new ArrayList<String>(Arrays.asList(names)));
 
+		/*
+		JF: Nov 13, 2016
+		To test Sending text message with location data,
+		uncomment the below block and add cell phone numebrs to the phoneNumbers array
+		ex: phoneNumbers[] = {"1112223333","5556662222"};
+		 */
+//		String phoneNumbers[] = {};
+//		for(int i = 0; i < phoneNumbers.length; i++) {
+//			smsManager.sendTextMessage(phoneNumbers[i], null, message, null, null);
+//		}
+
 		numbers = getContactNumber("");
 
 		if (numbers.isEmpty()) {
