@@ -88,11 +88,17 @@ public class MyLocationListener implements LocationListener {
 		//JF: Nov 13, 2016
 		//String now contains google maps query that functions with
 		//Users browser and google maps App
-		String s = 	"Longitude: " + formattedLongitude + "\n" +
+		String s = 	"Longitude: " + formattedLongitude + " \n" +
 					"Latitude: " + formattedLatitude +
-					"\n\nMy Current City is: " + cityName +
+					" \n\nMy Current City is: " + cityName +
 					"\nhttp://maps.google.ca/maps/place/?q=" +
 				formattedLatitude + "," + formattedLongitude;
+
+//		String s = 	"Longitude: " + 123.123 + "\n" +
+//				"Latitude: " + 57.876 +
+//				"\n\nMy Current City is: " + cityName +
+//				"\nhttp://maps.google.ca/maps/place/?q=" +
+//				123.123 + "," + 57.876;
 		output.setText(s);
 	}
 

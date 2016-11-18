@@ -38,4 +38,14 @@
         android:onClick="sendGPSText"
         android:layout_below="@+id/gpsButton"
         android:layout_alignStart="@+id/gpsButton" />
+
+    <Button
+        android:text="View All"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sendGPSButton"
+        android:layout_alignStart="@+id/sendGPSButton"
+        android:layout_marginTop="52dp"
+        android:id="@+id/button"
+        android:onClick="viewAll"/>
 </RelativeLayout>

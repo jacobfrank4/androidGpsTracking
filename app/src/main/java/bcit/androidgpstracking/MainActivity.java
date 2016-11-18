@@ -1,5 +1,6 @@
 package bcit.androidgpstracking;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,10 +18,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static android.content.ContentValues.TAG;
+
 public class MainActivity extends AppCompatActivity {
 
 	LocationManager locationManager;
-	DatabaseHelper myDb;
+	SQLiteDatabaseHelper db;
 
 	TextView output;
 
@@ -29,11 +33,15 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		output = (TextView) findViewById(R.id.textView);
+		db = new SQLiteDatabaseHelper(this);
 	}
 
 	public void getGPS(final View view) {
+
 		LocationListener locationListener = new MyLocationListener(output);
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+
+		parseForDB();
 	}
 
 	/*
@@ -56,28 +64,28 @@ public class MainActivity extends AppCompatActivity {
 		uncomment the below block and add cell phone numebrs to the phoneNumbers array
 		ex: phoneNumbers[] = {"1112223333","5556662222"};
 		 */
-//		String phoneNumbers[] = {};
-//		for(int i = 0; i < phoneNumbers.length; i++) {
-//			smsManager.sendTextMessage(phoneNumbers[i], null, message, null, null);
+		String phoneNumbers[] = {};
+		for(int i = 0; i < phoneNumbers.length; i++) {
+			smsManager.sendTextMessage(phoneNumbers[i], null, message, null, null);
+		}
+
+//		numbers = getContactNumber("Jacob Frank");
+//
+//		if (numbers.isEmpty()) {
+//			output.setText("Contact list is empty");
+//		} else {
+//			output.setText(numbers.get(0));
+//			//smsManager.sendTextMessage(numbers.get(0), null, message, null, null);
 //		}
-
-		numbers = getContactNumber("");
-
-		if (numbers.isEmpty()) {
-			output.setText("Contact list is empty");
-		} else {
-			output.setText(numbers.get(0));
-			//smsManager.sendTextMessage(numbers.get(0), null, message, null, null);
-		}
-
-		String test = new String();
-
-		for (int i = 0; i < numbers.size(); i++) {
-			output.setText(String.valueOf(i + 1));
-			test = test.concat(numbers.get(i));
-			//smsManager.sendTextMessage(numbers.get(i), null, message, null, null);
-		}
-		Toast.makeText(this, test, Toast.LENGTH_LONG).show();
+//
+//		String test = new String();
+//
+//		for (int i = 0; i < numbers.size(); i++) {
+//			output.setText(String.valueOf(i + 1));
+//			test = test.concat(numbers.get(i));
+//			//smsManager.sendTextMessage(numbers.get(i), null, message, null, null);
+//		}
+		//Toast.makeText(this, test, Toast.LENGTH_LONG).show();
 		//output.setText(test);
 	}
 
@@ -163,5 +171,60 @@ public class MainActivity extends AppCompatActivity {
 		}
 		cursor.close();
 		return numberList;
+	}
+
+	public void parseForDB(){
+
+/*
+//TESTING
+		String s = 	"Longitude: " + "123.123W" + " \n" +
+				"Latitude: " + "57.876N"	 +
+				" \n\nMy Current City is: " + "Burnaby" +
+				"\nhttp://maps.google.ca/maps/place/?q=" +
+				123.123 + "," + 57.876;
+		output.setText(s);
+*/
+
+
+
+
+
+		String[] temp = output.getText().toString().split(" ");
+		if(temp.length < 3) {
+			Toast.makeText(this, "Not enough data coming from Location Listener: " + output.getText().toString(), Toast.LENGTH_LONG).show();
+		} else{
+			if(db.insertData(1, temp[1], temp[3])){
+				Toast.makeText(this, "insert success", Toast.LENGTH_LONG).show();
+			}else{
+				Toast.makeText(this, "insert failed", Toast.LENGTH_LONG).show();
+			}
+		}
+
+
+	}
+
+	public void viewAll(final View view){
+		Cursor cursor = db.getAllData();
+		if(cursor.getCount() == 0){
+			Log.d(TAG, "No data found in db");
+		}else{
+			StringBuffer buffer = new StringBuffer();
+			while(cursor.moveToNext()){
+				buffer.append("ID: " + cursor.getString(0) + "\n"); //id
+				buffer.append("TRIP ID" + cursor.getString(1) + "\n"); //trip id
+				buffer.append("Lat: " + cursor.getString(2) + "\n"); //latitude
+				buffer.append("Long: " + cursor.getString(3) + "\n\n\n"); //longitude
+			}
+
+			showMessage("Data", buffer.toString());
+		}
+	}
+
+	public void showMessage(String title, String message){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setCancelable(true);
+		builder.setTitle(title);
+		builder.setMessage(message);
+		builder.show();
 	}
 }
