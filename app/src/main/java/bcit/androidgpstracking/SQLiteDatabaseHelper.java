@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Aingaran on 2016-11-18.
  */
@@ -15,12 +18,14 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
 
     public static final String DATABASE_NAME = "gps.db";
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
     public static final String TABLE_NAME = "gps_table";
     public static final String COL0 = "ID";
     public static final String COL1 = "TRIP_ID";
     public static final String COL2 = "LAT";
     public static final String COL3 = "LONG";
+    public static final String COL4 = "DATE";
+
 
 
 
@@ -35,7 +40,8 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
                                     COL0 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                     COL1 + " INTEGER, " +
                                     COL2 + " TEXT, " +
-                                    COL3 + " TEXT)");
+                                    COL3 + " TEXT, " +
+                                    COL4 + " DATE)");
     }
 
     @Override
@@ -48,7 +54,7 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
         if(newVersion > oldVersion) {
             db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " +
-                        COL3 + " TEXT");
+                        COL4 + " DATE");
         }
 
     }
@@ -59,6 +65,11 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
         values.put(COL1, trip_id);
         values.put(COL2, dbLat);
         values.put(COL3, dbLong);
+
+        //get current date
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
+        String date = sdf.format(new Date());
+        values.put(COL4, date);
 
         long insertId = db.insert(TABLE_NAME, null, values);
         db.close();

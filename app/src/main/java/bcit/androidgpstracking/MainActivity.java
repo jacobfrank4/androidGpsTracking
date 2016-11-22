@@ -3,6 +3,7 @@ package bcit.androidgpstracking;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -34,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		output = (TextView) findViewById(R.id.textView);
 		db = new SQLiteDatabaseHelper(this);
+	}
+
+	public void planTrip(final View view){
+		Intent intent = new Intent(this, PlanTrip.class);
+		startActivity(intent);
 	}
 
 	public void getGPS(final View view) {
@@ -175,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
 	public void parseForDB(){
 
-/*
+
 //TESTING
 		String s = 	"Longitude: " + "123.123W" + " \n" +
 				"Latitude: " + "57.876N"	 +
@@ -183,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
 				"\nhttp://maps.google.ca/maps/place/?q=" +
 				123.123 + "," + 57.876;
 		output.setText(s);
-*/
+
 
 
 
@@ -211,7 +217,8 @@ public class MainActivity extends AppCompatActivity {
 			StringBuffer buffer = new StringBuffer();
 			while(cursor.moveToNext()){
 				buffer.append("ID: " + cursor.getString(0) + "\n"); //id
-				buffer.append("TRIP ID" + cursor.getString(1) + "\n"); //trip id
+				buffer.append("TRIP ID: " + cursor.getString(1) + "\n"); //trip id
+				buffer.append("Date/Time: " + cursor.getString(4) + "\n"); //date/time
 				buffer.append("Lat: " + cursor.getString(2) + "\n"); //latitude
 				buffer.append("Long: " + cursor.getString(3) + "\n\n\n"); //longitude
 			}

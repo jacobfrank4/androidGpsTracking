@@ -48,4 +48,13 @@
         android:layout_marginTop="52dp"
         android:id="@+id/button"
         android:onClick="viewAll"/>
+
+    <Button
+        android:text="Plan Trip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/gpsButton"
+        android:layout_toStartOf="@+id/textView"
+        android:id="@+id/button2"
+        android:onClick="planTrip"/>
 </RelativeLayout>

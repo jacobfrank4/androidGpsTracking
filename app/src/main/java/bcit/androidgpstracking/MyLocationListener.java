@@ -94,11 +94,6 @@ public class MyLocationListener implements LocationListener {
 					"\nhttp://maps.google.ca/maps/place/?q=" +
 				formattedLatitude + "," + formattedLongitude;
 
-//		String s = 	"Longitude: " + 123.123 + "\n" +
-//				"Latitude: " + 57.876 +
-//				"\n\nMy Current City is: " + cityName +
-//				"\nhttp://maps.google.ca/maps/place/?q=" +
-//				123.123 + "," + 57.876;
 		output.setText(s);
 	}
 
