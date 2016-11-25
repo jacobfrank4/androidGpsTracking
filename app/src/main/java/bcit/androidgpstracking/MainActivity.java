@@ -61,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
 		ArrayList<String> numbers = new ArrayList<>();
 		String message = output.getText().toString();
 
+		Intent intent = new Intent(this, contactListActivity.class);
+		startActivity(intent);
+
 		//String[] names = {"", ""};
 		//numbers = getContactNumber(new ArrayList<String>(Arrays.asList(names)));
 
@@ -70,10 +73,10 @@ public class MainActivity extends AppCompatActivity {
 		uncomment the below block and add cell phone numebrs to the phoneNumbers array
 		ex: phoneNumbers[] = {"1112223333","5556662222"};
 		 */
-		String phoneNumbers[] = {};
-		for(int i = 0; i < phoneNumbers.length; i++) {
-			smsManager.sendTextMessage(phoneNumbers[i], null, message, null, null);
-		}
+//		String phoneNumbers[] = {};
+//		for(int i = 0; i < phoneNumbers.length; i++) {
+//			smsManager.sendTextMessage(phoneNumbers[i], null, message, null, null);
+//		}
 
 //		numbers = getContactNumber("Jacob Frank");
 //

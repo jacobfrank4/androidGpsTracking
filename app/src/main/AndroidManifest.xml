@@ -22,7 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PlanTrip"></activity>
+        <activity android:name=".PlanTrip"/>
+        <activity android:name=".contactListActivity">
+        </activity>
     </application>
 
 </manifest>
