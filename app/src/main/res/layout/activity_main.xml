@@ -50,8 +50,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button"
-<<<<<<< HEAD
-        android:onClick="viewAll"/>
+        android:onClick="viewAll"
+        android:src="@drawable/view_all"
+        android:background="#0000"
+        android:layout_marginBottom="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/sendGPSButton"/>
 
     <Button
         android:text="Plan Trip"
@@ -61,12 +65,4 @@
         android:layout_toStartOf="@+id/textView"
         android:id="@+id/button2"
         android:onClick="planTrip"/>
-=======
-        android:onClick="viewAll"
-        android:src="@drawable/view_all"
-        android:background="#0000"
-        android:layout_marginBottom="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/sendGPSButton" />
->>>>>>> 839b4716d57322746f18ac25b020572c35eb2b41
 </RelativeLayout>
