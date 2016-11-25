@@ -3,6 +3,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/geostat_launch"/>
+            android:src="@mipmap/geostat_launch"/>
     </item>
 </layer-list>
