@@ -9,6 +9,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@mipmap/background_image"
+
     tools:context="bcit.androidgpstracking.MainActivity">
 
     <TextView
@@ -19,34 +21,36 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:text="Get GPS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="133dp"
-        android:id="@+id/gpsButton"
-        android:onClick="getGPS"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true" />
-
-    <Button
+    <ImageButton
         android:text="Send GPS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
         android:id="@+id/sendGPSButton"
         android:onClick="sendGPSText"
-        android:layout_below="@+id/gpsButton"
+        android:src="@drawable/send_gps"
+        android:background="#0000"
+        android:layout_marginBottom="60dp"
+        android:layout_above="@+id/button"
         android:layout_alignStart="@+id/gpsButton" />
 
-    <Button
+    <ImageButton
+        android:text="Get GPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/gpsButton"
+        android:onClick="getGPS"
+        android:src="@drawable/get_gps"
+        android:background="#0000"
+        android:layout_alignBottom="@+id/sendGPSButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp" />
+
+    <ImageButton
         android:text="View All"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sendGPSButton"
-        android:layout_alignStart="@+id/sendGPSButton"
-        android:layout_marginTop="52dp"
         android:id="@+id/button"
+<<<<<<< HEAD
         android:onClick="viewAll"/>
 
     <Button
@@ -57,4 +61,12 @@
         android:layout_toStartOf="@+id/textView"
         android:id="@+id/button2"
         android:onClick="planTrip"/>
+=======
+        android:onClick="viewAll"
+        android:src="@drawable/view_all"
+        android:background="#0000"
+        android:layout_marginBottom="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/sendGPSButton" />
+>>>>>>> 839b4716d57322746f18ac25b020572c35eb2b41
 </RelativeLayout>
