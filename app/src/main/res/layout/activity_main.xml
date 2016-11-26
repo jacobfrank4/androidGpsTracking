@@ -10,7 +10,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@mipmap/background"
-
     tools:context="bcit.androidgpstracking.MainActivity">
 
     <TextView
@@ -21,48 +20,51 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <ImageButton
-        android:text="Send GPS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/sendGPSButton"
-        android:onClick="sendGPSText"
-        android:src="@drawable/send_gps"
-        android:background="#0000"
-        android:layout_marginBottom="60dp"
-        android:layout_above="@+id/button"
-        android:layout_alignStart="@+id/gpsButton" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center|bottom"
+        android:orientation="vertical">
 
-    <ImageButton
-        android:text="Get GPS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/gpsButton"
-        android:onClick="getGPS"
-        android:src="@drawable/get_gps"
-        android:background="#0000"
-        android:layout_alignBottom="@+id/sendGPSButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="60dp" />
+        <ImageButton
+            android:text="Send GPS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sendGPSButton"
+            android:onClick="sendGPSText"
+            android:src="@drawable/send_gps"
+            android:background="#0000"
+            android:layout_marginBottom="30dp" />
 
-    <ImageButton
-        android:text="View All"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button"
-        android:onClick="viewAll"
-        android:src="@drawable/view_all"
-        android:background="#0000"
-        android:layout_marginBottom="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/sendGPSButton"/>
+        <ImageButton
+            android:text="Get GPS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/gpsButton"
+            android:onClick="getGPS"
+            android:src="@drawable/get_gps"
+            android:background="#0000"
+            android:layout_marginBottom="30dp" />
 
-    <Button
-        android:text="Plan Trip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/gpsButton"
-        android:layout_toStartOf="@+id/textView"
-        android:id="@+id/button2"
-        android:onClick="planTrip"/>
+        <ImageButton
+            android:text="View All"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button"
+            android:onClick="viewAll"
+            android:src="@drawable/view_all"
+            android:background="#0000"
+            android:layout_marginBottom="30dp"/>
+
+        <ImageButton
+            android:text="Plan Trip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button2"
+            android:src="@drawable/plan_trip"
+            android:background="#0000"
+            android:onClick="planTrip"
+            android:layout_marginBottom="30dp"/>
+    </LinearLayout>
 </RelativeLayout>
