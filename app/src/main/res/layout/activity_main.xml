@@ -27,44 +27,70 @@
         android:gravity="center|bottom"
         android:orientation="vertical">
 
-        <ImageButton
+        <Button
             android:text="Send GPS"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/sendGPSButton"
             android:onClick="sendGPSText"
-            android:src="@drawable/send_gps"
+            android:textSize="25sp"
             android:background="#0000"
-            android:layout_marginBottom="30dp" />
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="15dp" />
 
-        <ImageButton
+        <Button
             android:text="Get GPS"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/gpsButton"
             android:onClick="getGPS"
-            android:src="@drawable/get_gps"
+            android:textSize="25sp"
             android:background="#0000"
-            android:layout_marginBottom="30dp" />
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="15dp" />
 
-        <ImageButton
+        <Button
             android:text="View All"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button"
             android:onClick="viewAll"
-            android:src="@drawable/view_all"
+            android:textSize="25sp"
             android:background="#0000"
-            android:layout_marginBottom="30dp"/>
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="15dp"/>
 
-        <ImageButton
+        <Button
             android:text="Plan Trip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button2"
-            android:src="@drawable/plan_trip"
+            android:id="@+id/planTrip"
+            android:textSize="25sp"
+            android:onClick="goToActvity"
             android:background="#0000"
-            android:onClick="planTrip"
-            android:layout_marginBottom="30dp"/>
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="15dp"/>
+
+        <Button
+            android:text="Trip View Practice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tripView"
+            android:textSize="25sp"
+            android:onClick="goToActvity"
+            android:background="#0000"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="15dp"/>
+
+        <Button
+            android:text="Previous Trips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/previousTrips"
+            android:textSize="25sp"
+            android:onClick="goToActvity"
+            android:background="#0000"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="15dp"/>
     </LinearLayout>
 </RelativeLayout>

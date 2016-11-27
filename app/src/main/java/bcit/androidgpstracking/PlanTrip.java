@@ -20,10 +20,10 @@ public class PlanTrip extends AppCompatActivity {
     SQLiteDatabaseHelper db;
 
 
-    ImageButton startDate;
-    ImageButton startTime;
-    ImageButton endDate;
-    ImageButton endTime;
+    Button startDate;
+    Button startTime;
+    Button endDate;
+    Button endTime;
     int startYear, startMonth, startDay;
     int startHour, startMinute;
     int endYear, endMonth, endDay;
@@ -64,8 +64,8 @@ public class PlanTrip extends AppCompatActivity {
     }
 */
     public void showDialogOnButtonClick(){
-        startDate = (ImageButton)findViewById(R.id.startDate);
-        endDate = (ImageButton)findViewById(R.id.endDate);   //validate end date is after/on start date
+        startDate = (Button)findViewById(R.id.startDate);
+        endDate = (Button)findViewById(R.id.endDate);   //validate end date is after/on start date
 
         startDate.setOnClickListener(
                 new View.OnClickListener(){
@@ -88,8 +88,8 @@ public class PlanTrip extends AppCompatActivity {
     }
 
     public void showTimePickerDialog(){
-        startTime = (ImageButton)findViewById(R.id.startTime);
-        endTime = (ImageButton)findViewById(R.id.endTime);   //validate endTime is after startTime if on the same day
+        startTime = (Button)findViewById(R.id.startTime);
+        endTime = (Button)findViewById(R.id.endTime);   //validate endTime is after startTime if on the same day
 
         startTime.setOnClickListener(
                 new View.OnClickListener(){

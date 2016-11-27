@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,10 +36,26 @@ public class MainActivity extends AppCompatActivity {
 		db = new SQLiteDatabaseHelper(this);
 	}
 
-	public void planTrip(final View view){
-		Intent intent = new Intent(this, PlanTrip.class);
-		startActivity(intent);
+	public void goToActvity(final View view){
+		int buttonClicked = view.getId();
+		Intent intent;
+
+		switch(buttonClicked) {
+			case R.id.planTrip:
+				intent = new Intent(this, PlanTrip.class);
+				startActivity(intent);
+				break;
+			case R.id.previousTrips:
+				intent = new Intent(this, PreviousTrips.class);
+				startActivity(intent);
+				break;
+			case R.id.tripView:
+				intent = new Intent(this, TripView.class);
+				startActivity(intent);
+				break;
+		}
 	}
+
 
 	public void getGPS(final View view) {
 		LocationListener locationListener = new MyLocationListener(output);
@@ -94,12 +111,13 @@ public class MainActivity extends AppCompatActivity {
 
 	public void parseForDB(){
 //TESTING
-		String s = 	"Longitude: " + "123.123W" + " \n" +
-				"Latitude: " + "57.876N"	 +
-				" \n\nMy Current City is: " + "Burnaby" +
-				"\nhttp://maps.google.ca/maps/place/?q=" +
-				123.123 + "," + 57.876;
-		output.setText(s);
+//		String s = 	"Longitude: " + "123.123W" + " \n" +
+//				"Latitude: " + "57.876N"	 +
+//				" \n\nMy Current City is: " + "Burnaby" +
+//				"\nhttp://maps.google.ca/maps/place/?q=" +
+//				123.123 + "," + 57.876;
+		String message = output.getText().toString();
+		output.setText(message);
 
 		String[] temp = output.getText().toString().split(" ");
 		if(temp.length < 3) {

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/activity_contact_list"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_previous_trips"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/medGreen"
-    tools:context="bcit.androidgpstracking.contactListActivity">
+    android:background="@color/lightGreen"
+    tools:context="bcit.androidgpstracking.PreviousTrips">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -26,19 +25,10 @@
             <ListView
                 android:id="@android:id/list"
                 android:layout_width="match_parent"
-                android:layout_height="490dp"
-                android:choiceMode="multipleChoice"
-                android:focusable="false"
+                android:layout_height="match_parent"
                 tools:listitem="@android:layout/simple_list_item_multiple_choice"
                 />
-
-            <Button
-                android:text="Send Message"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:id="@+id/sendButton"
-                android:onClick="returnNumbers"/>
         </LinearLayout>
     </ScrollView>
+
 </RelativeLayout>
