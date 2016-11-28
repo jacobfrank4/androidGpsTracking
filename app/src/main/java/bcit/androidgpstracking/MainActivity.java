@@ -8,15 +8,17 @@ import android.database.Cursor;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static android.content.ContentValues.TAG;
 
@@ -24,8 +26,10 @@ public class MainActivity extends AppCompatActivity {
 
 	LocationManager locationManager;
 	SQLiteDatabaseHelper db;
-
 	TextView output;
+
+	Timer tim = new Timer();
+	boolean timerActive = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +62,21 @@ public class MainActivity extends AppCompatActivity {
 
 
 	public void getGPS(final View view) {
-		LocationListener locationListener = new MyLocationListener(output);
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+		final LocationListener locationListener = new MyLocationListener(output);
+
+		if (!timerActive) {
+			//Request single gps update every 5 seconds
+			tim.scheduleAtFixedRate(new TimerTask() {
+				@Override
+				public void run() {
+					Looper.prepare();
+					locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null);
+					Looper.loop();
+				}
+			}, 0, 1000 * 5);
+			timerActive = true;
+		}
+		//locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
 		parseForDB();
 	}
 
