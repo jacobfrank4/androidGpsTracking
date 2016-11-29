@@ -36,6 +36,10 @@ public class MyLocationListener implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location loc) {
+		if (loc == null) {
+			Toast.makeText(output.getContext(), "GPS returned null", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		df = new DecimalFormat(("#.#####"));
 		Log.d(TAG, "TEST");
 		output.setText("");

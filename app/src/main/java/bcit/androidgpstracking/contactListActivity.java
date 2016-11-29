@@ -27,7 +27,7 @@ public class contactListActivity extends ListActivity {
 
 		ContentResolver cr = getContentResolver();
 		Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null,
-				"has_phone_number = 1", null, null);
+				"has_phone_number = 1", null, "display_name");
 
 		if (cursor.moveToFirst()) {
 			ArrayList<String> contactList = new ArrayList<>();
