@@ -1,5 +1,6 @@
 package bcit.androidgpstracking;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -16,13 +17,13 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
 public class PlanTrip extends AppCompatActivity {
 
     SQLiteDatabaseHelper db;
-
 
     Button startDate;
     Button startTime;
@@ -204,9 +205,26 @@ public class PlanTrip extends AppCompatActivity {
     }
 
     public void contacts(final View view){
+        //JA - calls activity to get contact list
+        Intent intent = new Intent(this, contactListActivity.class);
+        startActivityForResult(intent, 1);
 //        Toast.makeText(PlanTrip.this, "adding: Jacob Frank", Toast.LENGTH_LONG).show();
-        contactsInput = "Jacob Frank";
-        Toast.makeText(PlanTrip.this, "start: " + startDateInput + " " + startTimeInput + "\nend: " + endDateInput + " " + endTimeInput, Toast.LENGTH_LONG).show();
+        //contactsInput = "Jacob Frank";
+        //Toast.makeText(PlanTrip.this, "start: " + startDateInput + " " + startTimeInput + "\nend: " + endDateInput + " " + endTimeInput, Toast.LENGTH_LONG).show();
+    }
+
+    //Method called when user selects contacts
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                ArrayList<String> numbers = data.getStringArrayListExtra("numbers");
+                //Store numbers into database here
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 
     /*
