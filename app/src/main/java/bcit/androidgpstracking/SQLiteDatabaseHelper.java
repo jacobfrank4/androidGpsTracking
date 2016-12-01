@@ -18,13 +18,18 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
 
     public static final String DATABASE_NAME = "gps.db";
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 13;
     public static final String TABLE_NAME = "gps_table";
     public static final String COL0 = "ID";
     public static final String COL1 = "TRIP_ID";
     public static final String COL2 = "LAT";
     public static final String COL3 = "LONG";
     public static final String COL4 = "DATE";
+    public static final String COL5 = "START_DATE";
+    public static final String COL6 = "END_DATE";
+    public static final String COL7 = "FREQUENCY_NUMBER";
+    public static final String COL8 = "FREQUENCY_TYPE";
+    public static final String COL9 = "CONTACTS";
 
 
 
@@ -41,7 +46,12 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
                                     COL1 + " INTEGER, " +
                                     COL2 + " TEXT, " +
                                     COL3 + " TEXT, " +
-                                    COL4 + " DATE)");
+                                    COL4 + " DATE" +
+                                    COL5 + " DATE" +
+                                    COL6 + " DATE" +
+                                    COL7 + " INTEGER" +
+                                    COL8 + " TEXT" +
+                                    COL9 + " TEXT" + ")");
     }
 
     @Override
@@ -54,23 +64,27 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
         if(newVersion > oldVersion) {
             db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " +
-                        COL4 + " DATE");
+                        COL5 + " DATE");
         }
-
     }
 
-    public boolean insertData(int trip_id, String dbLat, String dbLong){
+    public boolean insertData(int trip_id, String dbLat, String dbLong, String start, String end, String frequencyNumber, String frequencyType, String contacts){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COL1, trip_id);
-        values.put(COL2, dbLat);
-        values.put(COL3, dbLong);
+        values.put(COL2, start);
+        values.put(COL3, end);
 
         //get current date
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
         String date = sdf.format(new Date());
         values.put(COL4, date);
 
+        values.put(COL5, start);    //start
+        values.put(COL6, end);      //date
+        values.put(COL7, frequencyNumber);
+        values.put(COL8, frequencyType);
+        values.put(COL9, contacts);
         long insertId = db.insert(TABLE_NAME, null, values);
         db.close();
 

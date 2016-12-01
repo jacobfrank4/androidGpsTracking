@@ -11,28 +11,6 @@
     android:background="@color/lightGreen"
     tools:context="bcit.androidgpstracking.PlanTrip">
 
-    <TextView
-        android:text="Start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="155dp" />
-
-    <Button
-        android:text="Start Date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="66dp"
-        android:id="@+id/startDate"
-        android:layout_alignBaseline="@+id/textView2"
-        android:layout_alignBottom="@+id/textView2"
-        android:textSize="20sp"
-        android:background="#0000"
-        android:textColor="#FFFFFF"
-        android:layout_toEndOf="@+id/textView2" />
-
     <Button
         android:text="Start Time"
         android:layout_width="wrap_content"
@@ -46,35 +24,111 @@
         android:id="@+id/startTime" />
 
     <Button
-        android:text="End Date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/startDate"
-        android:layout_alignStart="@+id/startDate"
-        android:layout_marginTop="49dp"
-        android:id="@+id/endDate"
-        android:textSize="20sp"
-        android:background="#0000"
-        android:textColor="#FFFFFF"
-        android:layout_toStartOf="@+id/startTime" />
-
-    <Button
         android:text="End Time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/endDate"
-        android:layout_alignStart="@+id/startTime"
         android:id="@+id/endTime"
         android:textSize="20sp"
         android:background="#0000"
         android:textColor="#FFFFFF"
+        android:layout_alignBaseline="@+id/endDate"
+        android:layout_alignBottom="@+id/endDate"
+        android:layout_alignStart="@+id/startTime"
+        android:layout_toStartOf="@+id/frequencySpinner"
         android:layout_alignEnd="@+id/startTime" />
 
-    <TextView
-        android:text="TextView"
+    <Button
+        android:text="Save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/endDate"
+        android:id="@+id/saveButton"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/textView3" />
+        android:layout_alignParentEnd="true"
+        android:onClick="save"/>
+
+    <Button
+        android:text="Start Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/startDate"
+        android:textSize="20sp"
+        android:background="#0000"
+        android:textColor="#FFFFFF"
+        android:layout_below="@+id/title"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="21dp" />
+
+    <TextView
+        android:text="Trip Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="End Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/endDate"
+        android:textSize="20sp"
+        android:background="#0000"
+        android:textColor="#FFFFFF"
+        android:layout_below="@+id/startDate"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/startTime" />
+
+    <TextView
+        android:text="tripStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tripStart"
+        android:layout_alignBaseline="@+id/startTime"
+        android:layout_alignBottom="@+id/startTime"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="tripEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tripEnd"
+        android:layout_alignBaseline="@+id/endTime"
+        android:layout_alignBottom="@+id/endTime"
+        android:layout_alignParentEnd="true" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/frequencyTypeSpinner"
+        android:layout_alignTop="@+id/frequencyNumber"
+        android:layout_alignParentEnd="true"
+        android:text="Day/Hour"
+        android:layout_toEndOf="@+id/endTime"
+        android:layout_alignStart="@+id/title" />
+
+    <Button
+        android:text="Contacts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/contactsButton"
+        android:layout_below="@+id/frequencyNumber"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="17dp"
+        android:layout_alignParentEnd="true"
+        android:onClick="contacts"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_marginTop="15dp"
+        android:id="@+id/frequencyNumber"
+        android:layout_below="@+id/endTime"
+        android:layout_alignParentStart="true"
+        android:hint="frequency"
+        android:onClick="frequencyOnClick"
+        android:layout_alignEnd="@+id/endDate" />
+
 </RelativeLayout>

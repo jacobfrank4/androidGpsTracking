@@ -3,12 +3,16 @@ package bcit.androidgpstracking;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -24,10 +28,27 @@ public class PlanTrip extends AppCompatActivity {
     Button startTime;
     Button endDate;
     Button endTime;
+    EditText frequencyNumber;
+    Spinner frequencyTypeSpinner;
+    Button contacts;
+    Button save;
+
     int startYear, startMonth, startDay;
     int startHour, startMinute;
+    String start;
+    String startDateInput;
+    String startTimeInput;
+
     int endYear, endMonth, endDay;
     int endHour, endMinute;
+    String end;
+    String endDateInput;
+    String endTimeInput;
+
+    String frequencyNumberInput;
+    String frequencyTypeInput;
+    String contactsInput;
+    int tripName = 2;
 
     static final int DIALOG_START_DATE = 0;
     static final int DIALOG_END_DATE = 0;
@@ -47,11 +68,38 @@ public class PlanTrip extends AppCompatActivity {
         startMonth = cal.get(Calendar.MONTH) + 1;   //plus one because month starts at 0
         startDay = cal.get(Calendar.DAY_OF_MONTH);
 
-        endYear = cal.get(Calendar.YEAR);
-        endMonth = cal.get(Calendar.MONTH) + 1;   //plus one because month starts at 0
-        endDay = cal.get(Calendar.DAY_OF_MONTH);
+//        endYear = cal.get(Calendar.YEAR);
+//        endMonth = cal.get(Calendar.MONTH) + 1;   //plus one because month starts at 0
+//        endDay = cal.get(Calendar.DAY_OF_MONTH);
 
-        Toast.makeText(PlanTrip.this, startYear + "/" + startMonth + "/" + startDay, Toast.LENGTH_LONG).show();
+        //default frequencyNumber
+        frequencyNumber = (EditText) findViewById(R.id.frequencyNumber);
+
+        //default frequencyType
+        //frequencyTypeInput = "hour";
+        frequencyTypeSpinner = (Spinner) findViewById(R.id.frequencyTypeSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.frequency_options, android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        frequencyTypeSpinner.setAdapter(adapter);
+        frequencyTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(getBaseContext(),parent.getItemAtPosition(position) + " selected", Toast.LENGTH_LONG).show();
+                frequencyNumberInput = parent.getItemAtPosition(position).toString();
+                //Toast.makeText(PlanTrip.this, frequencyNumberInput + " FREQU", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
+        //Toast.makeText(PlanTrip.this, startYear + "/" + startMonth + "/" + startDay, Toast.LENGTH_LONG).show();
         showDialogOnButtonClick();
         showTimePickerDialog();
 
@@ -72,7 +120,9 @@ public class PlanTrip extends AppCompatActivity {
                     @Override
                     public void onClick(View v){
                         showDialog(DIALOG_START_DATE );
-                        Toast.makeText(PlanTrip.this, startYear + "/" + startMonth + "/" + startDay, Toast.LENGTH_LONG).show();
+                        startDateInput = startYear + "/" + startMonth + "/" + startDay;
+                        //Toast.makeText(PlanTrip.this, startYear + "/" + startMonth + "/" + startDay, Toast.LENGTH_LONG).show();
+                        Toast.makeText(PlanTrip.this, "showD start: " + startDateInput, Toast.LENGTH_LONG).show();
                     }
                 }
         );
@@ -81,7 +131,8 @@ public class PlanTrip extends AppCompatActivity {
                     @Override
                     public void onClick(View v){
                         showDialog(DIALOG_END_DATE);
-                        Toast.makeText(PlanTrip.this, endYear + "/" + endMonth + "/" + endDay, Toast.LENGTH_LONG).show();
+                        endDateInput = endYear + "/" + endMonth + "/" + endDay;
+                        Toast.makeText(PlanTrip.this, "showD end: " + endYear + "/" + endMonth + "/" + endDay, Toast.LENGTH_LONG).show();
                     }
                 }
         );
@@ -96,6 +147,7 @@ public class PlanTrip extends AppCompatActivity {
                     @Override
                     public void onClick(View v){
                         showDialog(DIALOG_START_TIME);
+                        startTimeInput = startHour + ":" + startMinute;
                     }
                 }
         );
@@ -104,6 +156,7 @@ public class PlanTrip extends AppCompatActivity {
                     @Override
                     public void onClick(View v){
                         showDialog(DIALOG_END_TIME);
+                        endTimeInput = endHour + ":" + endMinute;
                     }
                 }
         );
@@ -131,7 +184,7 @@ public class PlanTrip extends AppCompatActivity {
             startYear = year;
             startMonth = month + 1;
             startDay = day;
-            Toast.makeText(PlanTrip.this, startYear + "/" + startMonth + "/" + startDay, Toast.LENGTH_LONG).show();
+//            Toast.makeText(PlanTrip.this, startYear + "/" + startMonth + "/" + startDay, Toast.LENGTH_LONG).show();
         }
     };
 
@@ -142,7 +195,40 @@ public class PlanTrip extends AppCompatActivity {
         public void onTimeSet(TimePicker timePicker, int hour, int minute) {
             startHour = hour;
             startMinute = minute;
-            Toast.makeText(PlanTrip.this, startHour + ":" + startMinute, Toast.LENGTH_LONG).show();
+//            Toast.makeText(PlanTrip.this, startHour + ":" + startMinute, Toast.LENGTH_LONG).show();
         }
     };
+
+    public void frequencyOnClick(final View view){
+//        frequencyNumberInput = Integer.parseInt(frequencyNumber.getText().toString());
+    }
+
+    public void contacts(final View view){
+//        Toast.makeText(PlanTrip.this, "adding: Jacob Frank", Toast.LENGTH_LONG).show();
+        contactsInput = "Jacob Frank";
+        Toast.makeText(PlanTrip.this, "start: " + startDateInput + " " + startTimeInput + "\nend: " + endDateInput + " " + endTimeInput, Toast.LENGTH_LONG).show();
+    }
+
+    /*
+    To Do:
+        -increment Trip_id every time save is successful
+     */
+    public void save(final View view){
+        //start =  startYear + "/" + startMonth + "/" + startDay + " " + startHour + ":" + startMinute;
+        //end = endYear + "/" + endMonth + "/" + endDay + " " + endHour + ":" + endMinute;
+
+        start =  startDateInput + " " + startTimeInput;
+        end = endDateInput + " " + endTimeInput;
+
+//        db.insertData(tripName, "", "", start, end, frequencyNumberInput, frequencyTypeInput, contactsInput);
+        if(db.insertData(tripName, "-1", "-1", start, end, frequencyNumberInput, frequencyTypeInput, contactsInput))
+            Toast.makeText(this, "Insert successful", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(this, "Insert FAILED, YOUR WROONG", Toast.LENGTH_LONG).show();
+        Intent intent =  new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 }
+
+
+

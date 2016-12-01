@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
 				startActivity(intent);
 				break;
 			case R.id.previousTrips:
-				intent = new Intent(this, PreviousTrips.class);
-				startActivity(intent);
+				//intent = new Intent(this, PreviousTrips.class);
+				//startActivity(intent);
 				break;
 			case R.id.tripView:
 				intent = new Intent(this, TripView.class);
@@ -128,19 +128,22 @@ public class MainActivity extends AppCompatActivity {
 
 	public void parseForDB(){
 //TESTING
-//		String s = 	"Longitude: " + "123.123W" + " \n" +
-//				"Latitude: " + "57.876N"	 +
-//				" \n\nMy Current City is: " + "Burnaby" +
-//				"\nhttp://maps.google.ca/maps/place/?q=" +
-//				123.123 + "," + 57.876;
-		String message = output.getText().toString();
-		output.setText(message);
+		String s = 	"Longitude: " + "123.123W" + " \n" +
+				"Latitude: " + "57.876N"	 +
+				" \n\nMy Current City is: " + "Burnaby" +
+				"\nhttp://maps.google.ca/maps/place/?q=" +
+				123.123 + "," + 57.876;
+		String[] temp = s.split(" ");
 
-		String[] temp = output.getText().toString().split(" ");
+//END PRODUCT
+//		String message = output.getText().toString();
+//		output.setText(message);
+//		String[] temp = output.getText().toString().split(" ");
+
 		if(temp.length < 3) {
 			Toast.makeText(this, "Not enough data coming from Location Listener: " + output.getText().toString(), Toast.LENGTH_LONG).show();
 		} else{
-			if(db.insertData(1, temp[1], temp[3])){
+			if(db.insertData(1, temp[1], temp[3], "", "", "1", "", "")){
 				Toast.makeText(this, "insert success", Toast.LENGTH_LONG).show();
 			}else{
 				Toast.makeText(this, "insert failed", Toast.LENGTH_LONG).show();
@@ -159,7 +162,12 @@ public class MainActivity extends AppCompatActivity {
 				buffer.append("TRIP ID: " + cursor.getString(1) + "\n"); //trip id
 				buffer.append("Date/Time: " + cursor.getString(4) + "\n"); //date/time
 				buffer.append("Lat: " + cursor.getString(2) + "\n"); //latitude
-				buffer.append("Long: " + cursor.getString(3) + "\n\n\n"); //longitude
+				buffer.append("Long: " + cursor.getString(3) + "\n"); //longitude
+				buffer.append("Start: " + cursor.getString(5) + "\n"); //longitude
+				buffer.append("End: " + cursor.getString(6) + "\n"); //longitude
+				buffer.append("Frequency Number: " + cursor.getString(7) + "\n"); //longitude
+				buffer.append("Frequency Type: " + cursor.getString(8) + "\n"); //longitude
+				buffer.append("Contacts: " + cursor.getString(9) + "\n\n\n"); //longitude
 			}
 
 			showMessage("Data", buffer.toString());
