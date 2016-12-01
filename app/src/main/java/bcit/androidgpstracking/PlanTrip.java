@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 
@@ -219,6 +220,7 @@ public class PlanTrip extends AppCompatActivity {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 ArrayList<String> numbers = data.getStringArrayListExtra("numbers");
+                contactsInput = Arrays.toString(numbers.toArray());
                 //Store numbers into database here
             }
             if (resultCode == Activity.RESULT_CANCELED) {

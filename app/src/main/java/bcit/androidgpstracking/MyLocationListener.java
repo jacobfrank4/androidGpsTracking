@@ -1,6 +1,5 @@
 package bcit.androidgpstracking;
 
-
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -26,6 +25,8 @@ public class MyLocationListener implements LocationListener {
 	String formattedLatitude;
 	double rawLongitude;
 	double rawLatidude;
+	boolean lastLocationAccurate = false;
+	String formattedOutput = new String();
 
 	public MyLocationListener() {
 	}
@@ -34,19 +35,28 @@ public class MyLocationListener implements LocationListener {
 		this.output = output;
 	}
 
+	public boolean getLocationAccurate() {
+		return lastLocationAccurate;
+	}
+
+	public String getLastLocationTextMessage() {
+		return (formattedOutput.isEmpty()) ? "Haven't got a location yet" : formattedOutput;
+	}
+
 	@Override
 	public void onLocationChanged(Location loc) {
 		if (loc == null) {
 			Toast.makeText(output.getContext(), "GPS returned null", Toast.LENGTH_SHORT).show();
 			return;
 		}
+		lastLocationAccurate = loc.getAccuracy() < 50;
 		df = new DecimalFormat(("#.#####"));
 		Log.d(TAG, "TEST");
 		output.setText("");
 		Toast.makeText(
 				output.getContext(),
 				"Location changed: Lat: " + loc.getLatitude() + " Lng: "
-						+ loc.getLongitude(), Toast.LENGTH_SHORT).show();
+						+ loc.getLongitude() + "\n" + String.valueOf(loc.getAccuracy()), Toast.LENGTH_SHORT).show();
 
 		//JF: Nov 13, 2016
 		//The raw double longitude and latitude variables.
@@ -97,6 +107,8 @@ public class MyLocationListener implements LocationListener {
 					" \n\nMy Current City is: " + cityName +
 					"\nhttp://maps.google.ca/maps/place/?q=" +
 				formattedLatitude + "," + formattedLongitude;
+
+		formattedOutput = s;
 
 		output.setText(s);
 	}
