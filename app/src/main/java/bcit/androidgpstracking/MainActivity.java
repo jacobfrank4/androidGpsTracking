@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);	
 		setContentView(R.layout.activity_main);
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		output = (TextView) findViewById(R.id.textView);
+		//output = (TextView) findViewById(R.id.textView);
 		db = new SQLiteDatabaseHelper(this);
     }
 
@@ -56,10 +56,10 @@ public class MainActivity extends AppCompatActivity {
 				intent = new Intent(this, PreviousTrips.class);
 				startActivity(intent);
 				break;
-			case R.id.tripView:
-				intent = new Intent(this, TripView.class);
-				startActivity(intent);
-				break;
+//			case R.id.tripView:
+//				intent = new Intent(this, TripView.class);
+//				startActivity(intent);
+//				break;
 		}
 	}
 
@@ -93,9 +93,9 @@ public class MainActivity extends AppCompatActivity {
 
 				long minutes = duration / (1000 * 60);
 
-				Toast.makeText(output.getContext(), String.valueOf(duration), Toast.LENGTH_LONG).show();
-				Toast.makeText(output.getContext(), String.valueOf(duration / 1000), Toast.LENGTH_LONG).show();
-				Toast.makeText(output.getContext(), String.valueOf(duration / 60000), Toast.LENGTH_LONG).show();
+//				Toast.makeText(this, String.valueOf(duration), Toast.LENGTH_LONG).show();
+//				Toast.makeText(output.getContext(), String.valueOf(duration / 1000), Toast.LENGTH_LONG).show();
+//				Toast.makeText(output.getContext(), String.valueOf(duration / 60000), Toast.LENGTH_LONG).show();
 
 				long frequencyLength;
 				switch (dateRange.getString(dateRange.getColumnIndex(SQLiteDatabaseHelper.COL8))) {
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
-								MyLocationListener locationListener = new MyLocationListener(output, tripID, db);
+								MyLocationListener locationListener = new MyLocationListener(MainActivity.this, tripID, db);
 								locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
 								if (locationListener.getLocationAccurate()) {
 									locationManager.removeUpdates(locationListener);
@@ -144,14 +144,14 @@ public class MainActivity extends AppCompatActivity {
 
 					@Override
 					public void onFinish() {
-						Toast.makeText(output.getContext(), "Timer finished", Toast.LENGTH_LONG).show();
+//						Toast.makeText(output.getContext(), "Timer finished", Toast.LENGTH_LONG).show();
 					}
 				};
 				cdt.start();
 
 			} catch (Exception e) {
 				//Database contains badly formatted date strings
-				Toast.makeText(output.getContext(), "Exception", Toast.LENGTH_LONG).show();
+//				Toast.makeText(output.getContext(), "Exception", Toast.LENGTH_LONG).show();
 			}
 
 		} else {
@@ -193,10 +193,10 @@ public class MainActivity extends AppCompatActivity {
 			if (resultCode == Activity.RESULT_OK) {
 				SmsManager smsManager = SmsManager.getDefault();
 				ArrayList<String> numbers = data.getStringArrayListExtra("numbers");
-				String message = output.getText().toString();
+				//String message = output.getText().toString();
 
 				for (String number : numbers) {
-					smsManager.sendTextMessage(number, null, message, null, null);
+					//smsManager.sendTextMessage(number, null, message, null, null);
 				}
 			}
 			if (resultCode == Activity.RESULT_CANCELED) {
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
 		} else if (requestCode == 2) {
 			if (resultCode == Activity.RESULT_OK) {
 				String tripID = String.valueOf(data.getIntExtra("ID", -1));
-				Toast.makeText(output.getContext(), "Got trip ID: " + tripID, Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Got trip ID: " + tripID, Toast.LENGTH_SHORT).show();
 				tripMessageLoop(tripID);
 			}
 			if (resultCode == Activity.RESULT_CANCELED) {
@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
 //		String[] temp = output.getText().toString().split(" ");
 
 		if(temp.length < 3) {
-			Toast.makeText(this, "Not enough data coming from Location Listener: " + output.getText().toString(), Toast.LENGTH_LONG).show();
+			//Toast.makeText(this, "Not enough data coming from Location Listener: " + output.getText().toString(), Toast.LENGTH_LONG).show();
 		} else{
 			//if(db.insertData(1, temp[1], temp[3], "", "", "1", "", "", "")){
 			if(db.insertData(1, "567.123N", "123.123W", "", "", "1", "", "", "")){
