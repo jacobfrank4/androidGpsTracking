@@ -1,6 +1,8 @@
 package bcit.androidgpstracking;
 
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -12,6 +14,8 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -119,8 +123,27 @@ public class MyLocationListener implements LocationListener {
 
 		prev.moveToFirst();
 
-		dbh.insertData(Integer.parseInt(tripID), String.valueOf(rawLatidude), String.valueOf(rawLongitude), prev.getString(0),
-				prev.getString(1), prev.getString(2), prev.getString(3), prev.getString(4), prev.getString(5));
+		SQLiteDatabase db = dbh.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(SQLiteDatabaseHelper.COL1, tripID);
+		values.put(SQLiteDatabaseHelper.COL2, formattedLatitude);
+		values.put(SQLiteDatabaseHelper.COL3, formattedLongitude);
+
+		//get current date
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String date = sdf.format(new Date());
+		values.put(SQLiteDatabaseHelper.COL4, date);
+
+		values.put(SQLiteDatabaseHelper.COL5, prev.getString(0));    //start
+		values.put(SQLiteDatabaseHelper.COL6, prev.getString(1));      //date
+		values.put(SQLiteDatabaseHelper.COL7, prev.getString(2));
+		values.put(SQLiteDatabaseHelper.COL8, prev.getString(3));
+		values.put(SQLiteDatabaseHelper.COL9, prev.getString(4));
+		values.put(SQLiteDatabaseHelper.COL10, prev.getString(5));
+		long insertId = db.insert(SQLiteDatabaseHelper.TABLE_NAME, null, values);
+
+//		dbh.insertData(Integer.parseInt(tripID), String.valueOf(rawLatidude), String.valueOf(rawLongitude), prev.getString(0),
+//				prev.getString(1), prev.getString(2), prev.getString(3), prev.getString(4), prev.getString(5));
 
 		//output.setText(s);
 	}
