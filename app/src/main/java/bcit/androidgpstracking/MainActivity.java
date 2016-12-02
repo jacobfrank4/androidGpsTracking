@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 				SQLiteDatabaseHelper.COL1 + " = " + tripID, null, null, null, null);
 
 		if (dateRange.moveToFirst()) {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:MM");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 			try {
 				Date start = sdf.parse(dateRange.getString(0));
 				Date end = sdf.parse(dateRange.getString(1));
@@ -91,6 +91,12 @@ public class MainActivity extends AppCompatActivity {
 				} else {
 					duration = start.getTime() - end.getTime();
 				}
+
+				long minutes = duration / (1000 * 60);
+
+				Toast.makeText(output.getContext(), String.valueOf(duration), Toast.LENGTH_LONG).show();
+				Toast.makeText(output.getContext(), String.valueOf(duration / 1000), Toast.LENGTH_LONG).show();
+				Toast.makeText(output.getContext(), String.valueOf(duration / 60000), Toast.LENGTH_LONG).show();
 
 				long frequencyLength;
 				switch (dateRange.getString(dateRange.getColumnIndex(SQLiteDatabaseHelper.COL8))) {
@@ -138,13 +144,14 @@ public class MainActivity extends AppCompatActivity {
 
 					@Override
 					public void onFinish() {
-
+						Toast.makeText(output.getContext(), "Timer finished", Toast.LENGTH_LONG).show();
 					}
 				};
 				cdt.start();
 
 			} catch (Exception e) {
 				//Database contains badly formatted date strings
+				Toast.makeText(output.getContext(), "Exception", Toast.LENGTH_LONG).show();
 			}
 
 		} else {
