@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,7 +19,7 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
 
     public static final String DATABASE_NAME = "gps.db";
-    public static final int DATABASE_VERSION = 14;
+    public static final int DATABASE_VERSION = 15;
     public static final String TABLE_NAME = "gps_table";
     public static final String COL0 = "ID";
     public static final String COL1 = "TRIP_ID";
@@ -47,12 +48,12 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
                                     COL1 + " INTEGER, " +
                                     COL2 + " TEXT, " +
                                     COL3 + " TEXT, " +
-                                    COL4 + " DATE" +
-                                    COL5 + " DATE" +
-                                    COL6 + " DATE" +
-                                    COL7 + " INTEGER" +
-                                    COL8 + " TEXT" +
-                                    COL9 + " TEXT" +
+                                    COL4 + " DATE, " +
+                                    COL5 + " DATE, " +
+                                    COL6 + " DATE, " +
+                                    COL7 + " INTEGER, " +
+                                    COL8 + " TEXT, " +
+                                    COL9 + " TEXT, " +
                                     COL10 + " TEXT" + ")");
     }
 
@@ -92,8 +93,9 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
         long insertId = db.insert(TABLE_NAME, null, values);
         db.close();
 
-        if(insertId == -1)
+        if(insertId == -1) {
             return false;
+        }
         return true;
     }
 
