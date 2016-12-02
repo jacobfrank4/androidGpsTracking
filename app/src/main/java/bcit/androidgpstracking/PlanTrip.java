@@ -18,9 +18,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class PlanTrip extends AppCompatActivity {
@@ -318,12 +320,10 @@ public class PlanTrip extends AppCompatActivity {
         }
 
 
-        finish();
+//        finish();
 
-/*        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try{
-
-
             Date startValidate = sdf.parse(startYear + "-" + startMonth + "-" + startDay + " " + startHour + ":" + startMinute);
             Date endValidate = sdf.parse(endYear + "-" + endMonth + "-" + endDay + " " + endHour + ":" + endMinute);
             Date currValidate = new Date();
@@ -335,7 +335,8 @@ public class PlanTrip extends AppCompatActivity {
             if(currValidate.compareTo(startValidate) < 0){
                 //Toast.makeText(this, "valid\n" + "Curr: " + currValidate + "\nstart: " + startValidate + "\nStart year: " + startYear, Toast.LENGTH_LONG).show();
                 if(startValidate.compareTo(endValidate) < 0){
-                    //Toast.makeText(this, "valid\n" + "Start: " + startValidate + "\nend: " + endValidate, Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "valid\n" + "Start: " + startValidate + "\nend: " + endValidate, Toast.LENGTH_LONG).show();
+                    finish();
                 }
                 else{
                     //Toast.makeText(this, "invalid\n" + "start: " + startValidate + "\nend: " + endValidate, Toast.LENGTH_LONG).show();
@@ -344,10 +345,11 @@ public class PlanTrip extends AppCompatActivity {
             else{
                 //Toast.makeText(this, "invalid\n" + "Curr: " + currValidate + "\nstart: " + startValidate, Toast.LENGTH_LONG).show();
             }
+
         }catch (Exception e){
             //Toast.makeText(this, "Exception creating validators", Toast.LENGTH_LONG).show();
         }
-*/
+
     }
 }
 
