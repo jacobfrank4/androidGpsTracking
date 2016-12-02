@@ -5,8 +5,10 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+
+import static android.content.ContentValues.TAG;
 
 
 public class PlanTrip extends AppCompatActivity {
@@ -305,9 +309,9 @@ public class PlanTrip extends AppCompatActivity {
 
 
 
-            Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
 
-            intent.putExtra("ID", trip_id);
+        intent.putExtra("ID", trip_id);
 
 
         if (db.insertData(trip_id, "", "", start, end, frequencyNumberInput, frequencyTypeInput, contactsInput, trip_name)) {
@@ -319,6 +323,9 @@ public class PlanTrip extends AppCompatActivity {
             setResult(RESULT_CANCELED, intent);
         }
 
+        //making a change at Nov 2 - 11:34am
+        int lastTripId = getLastTripId() + 1;
+        Toast.makeText(this, "last tripId = " + lastTripId, Toast.LENGTH_LONG).show();
 
 //        finish();
 
@@ -336,7 +343,7 @@ public class PlanTrip extends AppCompatActivity {
                 //Toast.makeText(this, "valid\n" + "Curr: " + currValidate + "\nstart: " + startValidate + "\nStart year: " + startYear, Toast.LENGTH_LONG).show();
                 if(startValidate.compareTo(endValidate) < 0){
                     Toast.makeText(this, "valid\n" + "Start: " + startValidate + "\nend: " + endValidate, Toast.LENGTH_LONG).show();
-                    finish();
+                    //finish();
                 }
                 else{
                     //Toast.makeText(this, "invalid\n" + "start: " + startValidate + "\nend: " + endValidate, Toast.LENGTH_LONG).show();
@@ -350,6 +357,21 @@ public class PlanTrip extends AppCompatActivity {
             //Toast.makeText(this, "Exception creating validators", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    public int getLastTripId(){
+        Cursor cursor = db.getAllData();
+        String buffer = new String();
+
+        if(cursor.getCount() == 0){
+            Log.d(TAG, "No data found in db");
+        }else{
+            while(cursor.moveToNext()){
+                buffer = cursor.getString(1);
+            }
+        }
+
+        return Integer.parseInt(buffer);
     }
 }
 
