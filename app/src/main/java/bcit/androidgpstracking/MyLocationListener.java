@@ -1,5 +1,6 @@
 package bcit.androidgpstracking;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
@@ -20,7 +21,7 @@ import static android.content.ContentValues.TAG;
 /*---------- Listener class to get coordinates ------------- */
 public class MyLocationListener implements LocationListener {
 
-	TextView output;
+	Context context;
 	DecimalFormat df;
 	String formattedLongitude;
 	String formattedLatitude;
@@ -31,10 +32,10 @@ public class MyLocationListener implements LocationListener {
 	String tripID;
 	SQLiteDatabaseHelper dbh;
 
-	public MyLocationListener(final TextView output, final String tripID, final SQLiteDatabaseHelper dbh) {
+	public MyLocationListener(final Context context, final String tripID, final SQLiteDatabaseHelper dbh) {
+		this.context = context;
 		this.tripID = tripID;
 		this.dbh = dbh;
-		this.output = output;
 	}
 
 	public boolean getLocationAccurate() {
@@ -48,7 +49,7 @@ public class MyLocationListener implements LocationListener {
 	@Override
 	public void onLocationChanged(Location loc) {
 		if (loc == null) {
-			Toast.makeText(output.getContext(), "GPS returned null", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(output.getContext(), "GPS returned null", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		lastLocationAccurate = loc.getAccuracy() < 50;
@@ -88,7 +89,7 @@ public class MyLocationListener implements LocationListener {
 
         /*------- To get city name from coordinates -------- */
 		String cityName = null;
-		Geocoder gcd = new Geocoder(output.getContext(), Locale.getDefault());
+		Geocoder gcd = new Geocoder(context, Locale.getDefault());
 		List<Address> addresses;
 		try {
 			addresses = gcd.getFromLocation(loc.getLatitude(),
@@ -112,12 +113,13 @@ public class MyLocationListener implements LocationListener {
 
 		formattedOutput = s;
 
+
 		Cursor prev = dbh.getWritableDatabase().query(SQLiteDatabaseHelper.TABLE_NAME,
 				new String[]{SQLiteDatabaseHelper.COL5, SQLiteDatabaseHelper.COL6, SQLiteDatabaseHelper.COL7,
 						SQLiteDatabaseHelper.COL8, SQLiteDatabaseHelper.COL9, SQLiteDatabaseHelper.COL10},
 				SQLiteDatabaseHelper.COL1 + " = " + tripID, null, null, null, null);
 
-		prev.moveToFirst();
+//		prev.moveToFirst();
 
 		dbh.insertData(Integer.parseInt(tripID), String.valueOf(rawLatidude), String.valueOf(rawLongitude), prev.getString(0),
 				prev.getString(1), prev.getString(2), prev.getString(3), prev.getString(4), prev.getString(5));
