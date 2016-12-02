@@ -285,7 +285,10 @@ public class PlanTrip extends AppCompatActivity {
             Toast.makeText(this, "Insert successful", Toast.LENGTH_LONG).show();
         else
             Toast.makeText(this, "Insert FAILED, YOUR WROONG", Toast.LENGTH_LONG).show();
+
         Intent intent =  new Intent(this, MainActivity.class);
+        intent.putExtra("ID", trip_id);
+        setResult(RESULT_OK, intent);
         finish();
     }
 }

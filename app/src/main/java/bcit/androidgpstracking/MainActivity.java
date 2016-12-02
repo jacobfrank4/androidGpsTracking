@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 		switch(buttonClicked) {
 			case R.id.planTrip:
 				intent = new Intent(this, PlanTrip.class);
-				startActivity(intent);
+				startActivityForResult(intent, 2);
 				break;
 			case R.id.previousTrips:
 				//intent = new Intent(this, PreviousTrips.class);
@@ -181,6 +181,15 @@ public class MainActivity extends AppCompatActivity {
 				for (String number : numbers) {
 					smsManager.sendTextMessage(number, null, message, null, null);
 				}
+			}
+			if (resultCode == Activity.RESULT_CANCELED) {
+				//Write your code if there's no result
+			}
+		} else if (requestCode == 2) {
+			if (resultCode == Activity.RESULT_OK) {
+				String tripID = data.getStringExtra("ID");
+				Toast.makeText(output.getContext(), "Got trip ID: " + tripID, Toast.LENGTH_SHORT).show();
+				tripMessageLoop(tripID);
 			}
 			if (resultCode == Activity.RESULT_CANCELED) {
 				//Write your code if there's no result
