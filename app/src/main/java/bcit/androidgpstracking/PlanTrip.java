@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -42,12 +41,6 @@ public class PlanTrip extends AppCompatActivity {
     Button contacts;
     Button save;
     EditText tripNameEdit;
-
-    TextView startView;
-    TextView endView;
-    TextView startValidateView;
-    TextView endValidateView;
-    TextView currValidateView;
 
     int currYear, currMonth, currDay;
     int currHour, currMinute;
@@ -101,15 +94,6 @@ public class PlanTrip extends AppCompatActivity {
         //default frequencyNumber
         frequencyNumberEditText = (EditText) findViewById(R.id.frequencyNumber);
         tripNameEdit = (EditText) findViewById(R.id.trip_name);
-        startView = (TextView) findViewById(R.id.tripStartView);
-        endView = (TextView) findViewById(R.id.tripEndView);
-
-        startValidateView = (TextView) findViewById(R.id.startValidate);
-        endValidateView = (TextView) findViewById(R.id.endValidate);
-        currValidateView = (TextView) findViewById(R.id.currValidate);
-        startValidateView.setText(startYear + " " + startMonth + " " + startDay);
-        endValidateView.setText(endYear + " " + endMonth + " " + endDay);
-        currValidateView.setText(currYear + " " + currMonth + " " + currDay);
 
         //default frequencyType
         frequencyTypeInput = "hour";
@@ -149,7 +133,6 @@ public class PlanTrip extends AppCompatActivity {
                     public void onClick(View v) {
                         showDialog(DIALOG_START_DATE);
                         startDateInput = startYear + "/" + startMonth + "/" + startDay;
-                        startView.setText(startDateInput);
                         //Toast.makeText(PlanTrip.this, "showD start: " + startDateInput, Toast.LENGTH_LONG).show();
 
                     }
@@ -164,7 +147,6 @@ public class PlanTrip extends AppCompatActivity {
                     public void onClick(View v){
                         showDialog(DIALOG_END_DATE);
                         endDateInput = endYear + "/" + endMonth + "/" + endDay;
-                        endView.setText(endDateInput);
 //                        Toast.makeText(PlanTrip.this, "showD end: " + endYear + "/" + endMonth + "/" + endDay, Toast.LENGTH_LONG).show();
                     }
                 }
@@ -300,9 +282,6 @@ public class PlanTrip extends AppCompatActivity {
         start =  startDateInput + " " + startTimeInput;
         end = endDateInput + " " + endTimeInput;
 
-        startView.setText(start);
-        endView.setText(end);
-
         frequencyNumberInput = frequencyNumberEditText.getText().toString();
 
         trip_name = tripNameEdit.getText().toString();
@@ -334,10 +313,6 @@ public class PlanTrip extends AppCompatActivity {
             Date startValidate = sdf.parse(startYear + "-" + startMonth + "-" + startDay + " " + startHour + ":" + startMinute);
             Date endValidate = sdf.parse(endYear + "-" + endMonth + "-" + endDay + " " + endHour + ":" + endMinute);
             Date currValidate = new Date();
-
-            startValidateView.setText(startValidate.toString());
-            endValidateView.setText(endValidate.toString());
-            currValidateView.setText(currValidate.toString());
 
             if(currValidate.compareTo(startValidate) < 0){
                 //Toast.makeText(this, "valid\n" + "Curr: " + currValidate + "\nstart: " + startValidate + "\nStart year: " + startYear, Toast.LENGTH_LONG).show();
