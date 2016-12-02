@@ -123,31 +123,33 @@ public class TripView extends FragmentActivity implements OnMapReadyCallback {
                 lat =  latbuff.toString();
                 lon =  longbuff.toString();
 
-                if(lat.charAt(lat.length()-1) == 'S') {
-                    lat = lat.substring(0, lat.length()-1);
-                    latitude = -Double.parseDouble(lat);
+                if(!lat.isEmpty() && !lon.isEmpty()) {
+                    if(lat.charAt(lat.length()-1) == 'S') {
+                        lat = lat.substring(0, lat.length()-1);
+                        latitude = -Double.parseDouble(lat);
 
-                } else {
-                    lat = lat.substring(0, lat.length()-1);
-                    latitude = Double.parseDouble(lat);
+                    } else {
+                        lat = lat.substring(0, lat.length()-1);
+                        latitude = Double.parseDouble(lat);
+                    }
+
+                    if(lon.charAt(lon.length()-1) == 'W') {
+                        lon = lon.substring(0, lon.length()-1);
+                        longitude = -Double.parseDouble(lon);
+
+                    } else {
+                        lon = lon.substring(0, lon.length()-1);
+                        longitude = Double.parseDouble(lon);
+                    }
+
+                    latArray.add(latitude);
+                    longArray.add(longitude);
+
+
+                    // Add a trip marker
+                    LatLng tripMarker = new LatLng(latitude,longitude);
+                    mMap.addMarker(new MarkerOptions().position(tripMarker).title(namebuff.toString()));
                 }
-
-                if(lon.charAt(lon.length()-1) == 'W') {
-                    lon = lon.substring(0, lon.length()-1);
-                    longitude = -Double.parseDouble(lon);
-
-                } else {
-                    lon = lon.substring(0, lon.length()-1);
-                    longitude = Double.parseDouble(lon);
-                }
-
-                latArray.add(latitude);
-                longArray.add(longitude);
-
-
-                // Add a trip marker
-                LatLng tripMarker = new LatLng(latitude,longitude);
-                mMap.addMarker(new MarkerOptions().position(tripMarker).title(namebuff.toString()));
 
                 namebuff.delete(0, namebuff.length());
                 latbuff.delete(0, latbuff.length());

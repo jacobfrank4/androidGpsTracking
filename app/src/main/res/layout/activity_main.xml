@@ -12,42 +12,12 @@
     android:background="@mipmap/background"
     tools:context="bcit.androidgpstracking.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Current Location"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center|bottom"
         android:orientation="vertical">
-
-        <Button
-            android:text="Send GPS"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/sendGPSButton"
-            android:onClick="sendGPSText"
-            android:textSize="25sp"
-            android:background="#0000"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="15dp" />
-
-        <Button
-            android:text="Get GPS"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/gpsButton"
-            android:onClick="getGPS"
-            android:textSize="25sp"
-            android:background="#0000"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="15dp" />
 
         <Button
             android:text="View All"
@@ -72,17 +42,6 @@
             android:layout_marginBottom="15dp"/>
 
         <Button
-            android:text="Trip View Practice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tripView"
-            android:textSize="25sp"
-            android:onClick="goToActvity"
-            android:background="#0000"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="15dp"/>
-
-        <Button
             android:text="Previous Trips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,6 +50,6 @@
             android:onClick="goToActvity"
             android:background="#0000"
             android:textColor="#FFFFFF"
-            android:layout_marginBottom="15dp"/>
+            android:layout_marginBottom="80dp"/>
     </LinearLayout>
 </RelativeLayout>

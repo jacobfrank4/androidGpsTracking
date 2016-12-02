@@ -123,7 +123,7 @@ public class MyLocationListener implements LocationListener {
 						SQLiteDatabaseHelper.COL8, SQLiteDatabaseHelper.COL9, SQLiteDatabaseHelper.COL10},
 				SQLiteDatabaseHelper.COL1 + " = " + tripID, null, null, null, null);
 
-//		prev.moveToFirst();
+		prev.moveToFirst();
 
 		SQLiteDatabase db = dbh.getWritableDatabase();
 		ContentValues values = new ContentValues();

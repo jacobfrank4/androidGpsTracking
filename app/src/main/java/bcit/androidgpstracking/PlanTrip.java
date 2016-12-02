@@ -320,7 +320,7 @@ public class PlanTrip extends AppCompatActivity {
         }
 
 
-//        finish();
+        //finish();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try{
@@ -345,10 +345,12 @@ public class PlanTrip extends AppCompatActivity {
             else{
                 //Toast.makeText(this, "invalid\n" + "Curr: " + currValidate + "\nstart: " + startValidate, Toast.LENGTH_LONG).show();
             }
+            finish();
 
         }catch (Exception e){
             //Toast.makeText(this, "Exception creating validators", Toast.LENGTH_LONG).show();
         }
+        finish();
 
     }
 }
