@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		output = (TextView) findViewById(R.id.textView);
 		db = new SQLiteDatabaseHelper(this);
-	}
+    }
 
 	public void goToActvity(final View view){
 		int buttonClicked = view.getId();
@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
 				startActivity(intent);
 				break;
 			case R.id.previousTrips:
-				//intent = new Intent(this, PreviousTrips.class);
-				//startActivity(intent);
+				intent = new Intent(this, PreviousTrips.class);
+				startActivity(intent);
 				break;
 			case R.id.tripView:
 				intent = new Intent(this, TripView.class);
@@ -166,6 +166,22 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 	}
+
+    public void viewAllTrips(){
+        Cursor cursor = db.getAllTripNames();
+        if(cursor.getCount() == 0){
+            Log.d(TAG, "No data found in db");
+        }else{
+            StringBuffer buffer = new StringBuffer();
+            while(cursor.moveToNext()){
+                buffer.append("Trip Name: " + cursor.getString(0) + "\n");
+            }
+
+            showMessage("Data", buffer.toString());
+        }
+    }
+
+
 
 	public void viewAll(final View view){
 		Cursor cursor = db.getAllData();
