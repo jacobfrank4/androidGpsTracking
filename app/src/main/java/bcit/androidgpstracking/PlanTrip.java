@@ -281,14 +281,18 @@ public class PlanTrip extends AppCompatActivity {
 
         trip_name = tripNameEdit.getText().toString();
 
-        if(db.insertData(trip_id, "", "", start, end, frequencyNumberInput, frequencyTypeInput, contactsInput, trip_name))
-            Toast.makeText(this, "Insert successful", Toast.LENGTH_LONG).show();
-        else
-            Toast.makeText(this, "Insert FAILED, YOUR WROONG", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, MainActivity.class);
 
-        Intent intent =  new Intent(this, MainActivity.class);
         intent.putExtra("ID", trip_id);
-        setResult(RESULT_OK, intent);
+
+        if (db.insertData(trip_id, "", "", start, end, frequencyNumberInput, frequencyTypeInput, contactsInput, trip_name)) {
+            Toast.makeText(this, "Insert successful", Toast.LENGTH_LONG).show();
+            setResult(RESULT_OK, intent);
+        } else {
+            Toast.makeText(this, "Insert FAILED, YOUR WROONG", Toast.LENGTH_LONG).show();
+            setResult(RESULT_CANCELED, intent);
+        }
+
         finish();
     }
 }

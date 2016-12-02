@@ -79,28 +79,35 @@ public class MainActivity extends AppCompatActivity {
 				SQLiteDatabaseHelper.COL1 + " = " + tripID, null, null, null, null);
 
 		if (dateRange.moveToFirst()) {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:MM");
 			try {
 				Date start = sdf.parse(dateRange.getString(0));
 				Date end = sdf.parse(dateRange.getString(1));
 
-				long duration = end.getTime() - start.getTime();
+				//Remove this if when validation is in place since all trips will have proper start and end times
+				long duration;
+				if (end.getTime() > start.getTime()) {
+					duration = end.getTime() - start.getTime();
+				} else {
+					duration = start.getTime() - end.getTime();
+				}
+
 				long frequencyLength;
-				switch (dateRange.getString(4)) {
-					case "MINUTES":
+				switch (dateRange.getString(dateRange.getColumnIndex(SQLiteDatabaseHelper.COL8))) {
+					case "Minutes":
 						frequencyLength = 1000 * 60;
 						break;
-					case "HOURS":
+					case "Hours":
 						frequencyLength = 1000 * 60 * 60;
 						break;
-					case "DAYS":
+					case "Days":
 						frequencyLength = 1000 * 60 * 60 * 24;
 						break;
 					default:
 						frequencyLength = 1000 * 60 * 60;
 						break;
 				}
-				long tickLength = dateRange.getInt(3) * frequencyLength;
+				long tickLength = dateRange.getInt(dateRange.getColumnIndex(SQLiteDatabaseHelper.COL7)) * frequencyLength;
 
 				CountDownTimer cdt = new CountDownTimer(duration, tickLength) {
 					@Override
@@ -119,7 +126,9 @@ public class MainActivity extends AppCompatActivity {
 								if (contacts.moveToFirst()) {
 									List<String> numberList = Arrays.asList(contacts.getString(0).split("\\s*,\\s*"));
 									for (String number : numberList) {
-										smsManager.sendTextMessage(number, null, locationListener.getLastLocationTextMessage(), null, null);
+										if (!locationListener.getLastLocationTextMessage().isEmpty()) {
+											smsManager.sendTextMessage(number, null, locationListener.getLastLocationTextMessage(), null, null);
+										}
 									}
 								}
 								contacts.close();
@@ -132,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
 					}
 				};
+				cdt.start();
 
 			} catch (Exception e) {
 				//Database contains badly formatted date strings
@@ -140,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 		} else {
 			//Database returned nothing
 		}
-
+		dateRange.close();
 	}
 
 	/*
@@ -187,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		} else if (requestCode == 2) {
 			if (resultCode == Activity.RESULT_OK) {
-				String tripID = data.getStringExtra("ID");
+				String tripID = String.valueOf(data.getIntExtra("ID", -1));
 				Toast.makeText(output.getContext(), "Got trip ID: " + tripID, Toast.LENGTH_SHORT).show();
 				tripMessageLoop(tripID);
 			}
