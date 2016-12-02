@@ -5,8 +5,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -14,11 +16,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import static android.content.ContentValues.TAG;
 
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 		switch(buttonClicked) {
 			case R.id.planTrip:
 				intent = new Intent(this, PlanTrip.class);
-				startActivity(intent);
+				startActivityForResult(intent, 2);
 				break;
 			case R.id.previousTrips:
 				intent = new Intent(this, PreviousTrips.class);
@@ -60,40 +63,94 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
-
 	public void getGPS(final View view) {
+		tripMessageLoop("1234");
+	}
+
+	public void tripMessageLoop(final String tripID) {
 		final MyLocationListener locationListener = new MyLocationListener(output);
 		final SmsManager smsManager = SmsManager.getDefault();
-		if (!timerActive) {
-			//Request single gps update every 5 seconds
-			tim.scheduleAtFixedRate(new TimerTask() {
-				@Override
-				public void run() {
-					runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
-							if (locationListener.getLocationAccurate()) {
-								locationManager.removeUpdates(locationListener);
-								Toast.makeText(output.getContext(), "Removing updates", Toast.LENGTH_SHORT).show();
-							}
-							//Change where clause to current trip id instead of -1
-							Cursor contacts = db.getReadableDatabase().query(SQLiteDatabaseHelper.TABLE_NAME,
-									new String[]{SQLiteDatabaseHelper.COL9}, SQLiteDatabaseHelper.COL1 + " = -1", null, null, null, null);
 
-							if (contacts.moveToFirst()) {
-								List<String> numberList = Arrays.asList(contacts.getString(0).split("\\s*,\\s*"));
-								for (String number : numberList) {
-									smsManager.sendTextMessage(number, null, locationListener.getLastLocationTextMessage(), null, null);
-								}
-							}
-						}
-					});
+		final SQLiteDatabase database = db.getReadableDatabase();
+
+		Cursor dateRange = database.query(SQLiteDatabaseHelper.TABLE_NAME,
+				new String[]{SQLiteDatabaseHelper.COL5, SQLiteDatabaseHelper.COL6,
+						SQLiteDatabaseHelper.COL7, SQLiteDatabaseHelper.COL8},
+				SQLiteDatabaseHelper.COL1 + " = " + tripID, null, null, null, null);
+
+		if (dateRange.moveToFirst()) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:MM");
+			try {
+				Date start = sdf.parse(dateRange.getString(0));
+				Date end = sdf.parse(dateRange.getString(1));
+
+				//Remove this if when validation is in place since all trips will have proper start and end times
+				long duration;
+				if (end.getTime() > start.getTime()) {
+					duration = end.getTime() - start.getTime();
+				} else {
+					duration = start.getTime() - end.getTime();
 				}
-			}, 0, 1000 * 20);
-			timerActive = true;
+
+				long frequencyLength;
+				switch (dateRange.getString(dateRange.getColumnIndex(SQLiteDatabaseHelper.COL8))) {
+					case "Minutes":
+						frequencyLength = 1000 * 60;
+						break;
+					case "Hours":
+						frequencyLength = 1000 * 60 * 60;
+						break;
+					case "Days":
+						frequencyLength = 1000 * 60 * 60 * 24;
+						break;
+					default:
+						frequencyLength = 1000 * 60 * 60;
+						break;
+				}
+				long tickLength = dateRange.getInt(dateRange.getColumnIndex(SQLiteDatabaseHelper.COL7)) * frequencyLength;
+
+				CountDownTimer cdt = new CountDownTimer(duration, tickLength) {
+					@Override
+					public void onTick(long l) {
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
+								if (locationListener.getLocationAccurate()) {
+									locationManager.removeUpdates(locationListener);
+								}
+								//Change where clause to current trip id instead of -1
+								Cursor contacts = database.query(SQLiteDatabaseHelper.TABLE_NAME,
+										new String[]{SQLiteDatabaseHelper.COL9}, SQLiteDatabaseHelper.COL1 + " = " + tripID, null, null, null, null);
+
+								if (contacts.moveToFirst()) {
+									List<String> numberList = Arrays.asList(contacts.getString(0).split("\\s*,\\s*"));
+									for (String number : numberList) {
+										if (!locationListener.getLastLocationTextMessage().isEmpty()) {
+											smsManager.sendTextMessage(number, null, locationListener.getLastLocationTextMessage(), null, null);
+										}
+									}
+								}
+								contacts.close();
+							}
+						});
+					}
+
+					@Override
+					public void onFinish() {
+
+					}
+				};
+				cdt.start();
+
+			} catch (Exception e) {
+				//Database contains badly formatted date strings
+			}
+
+		} else {
+			//Database returned nothing
 		}
-		//parseForDB();
+		dateRange.close();
 	}
 
 	/*
@@ -134,6 +191,15 @@ public class MainActivity extends AppCompatActivity {
 				for (String number : numbers) {
 					smsManager.sendTextMessage(number, null, message, null, null);
 				}
+			}
+			if (resultCode == Activity.RESULT_CANCELED) {
+				//Write your code if there's no result
+			}
+		} else if (requestCode == 2) {
+			if (resultCode == Activity.RESULT_OK) {
+				String tripID = String.valueOf(data.getIntExtra("ID", -1));
+				Toast.makeText(output.getContext(), "Got trip ID: " + tripID, Toast.LENGTH_SHORT).show();
+				tripMessageLoop(tripID);
 			}
 			if (resultCode == Activity.RESULT_CANCELED) {
 				//Write your code if there's no result
