@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
-								MyLocationListener locationListener = new MyLocationListener(tripID, db);
+								MyLocationListener locationListener = new MyLocationListener(output, tripID, db);
 								locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
 								if (locationListener.getLocationAccurate()) {
 									locationManager.removeUpdates(locationListener);

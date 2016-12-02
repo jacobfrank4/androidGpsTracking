@@ -31,9 +31,10 @@ public class MyLocationListener implements LocationListener {
 	String tripID;
 	SQLiteDatabaseHelper dbh;
 
-	public MyLocationListener(final String tripID, final SQLiteDatabaseHelper dbh) {
+	public MyLocationListener(final TextView output, final String tripID, final SQLiteDatabaseHelper dbh) {
 		this.tripID = tripID;
 		this.dbh = dbh;
+		this.output = output;
 	}
 
 	public boolean getLocationAccurate() {
@@ -112,8 +113,7 @@ public class MyLocationListener implements LocationListener {
 		formattedOutput = s;
 
 		Cursor prev = dbh.getWritableDatabase().query(SQLiteDatabaseHelper.TABLE_NAME,
-				new String[]{SQLiteDatabaseHelper.COL4, SQLiteDatabaseHelper.COL5,
-						SQLiteDatabaseHelper.COL6, SQLiteDatabaseHelper.COL7,
+				new String[]{SQLiteDatabaseHelper.COL5, SQLiteDatabaseHelper.COL6, SQLiteDatabaseHelper.COL7,
 						SQLiteDatabaseHelper.COL8, SQLiteDatabaseHelper.COL9, SQLiteDatabaseHelper.COL10},
 				SQLiteDatabaseHelper.COL1 + " = " + tripID, null, null, null, null);
 
