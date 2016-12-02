@@ -18,7 +18,7 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
 
     public static final String DATABASE_NAME = "gps.db";
-    public static final int DATABASE_VERSION = 13;
+    public static final int DATABASE_VERSION = 14;
     public static final String TABLE_NAME = "gps_table";
     public static final String COL0 = "ID";
     public static final String COL1 = "TRIP_ID";
@@ -30,6 +30,7 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
     public static final String COL7 = "FREQUENCY_NUMBER";
     public static final String COL8 = "FREQUENCY_TYPE";
     public static final String COL9 = "CONTACTS";
+    public static final String COL10 = "TRIP_NAME";
 
 
 
@@ -51,7 +52,8 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
                                     COL6 + " DATE" +
                                     COL7 + " INTEGER" +
                                     COL8 + " TEXT" +
-                                    COL9 + " TEXT" + ")");
+                                    COL9 + " TEXT" +
+                                    COL10 + " TEXT" + ")");
     }
 
     @Override
@@ -64,16 +66,17 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
         if(newVersion > oldVersion) {
             db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " +
-                        COL5 + " DATE");
+                        COL10 + " TEXT");
         }
     }
 
-    public boolean insertData(int trip_id, String dbLat, String dbLong, String start, String end, String frequencyNumber, String frequencyType, String contacts){
+    public boolean insertData(int trip_id, String dbLat, String dbLong, String start, String end,
+                              String frequencyNumber, String frequencyType, String contacts, String trip_name){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COL1, trip_id);
-        values.put(COL2, start);
-        values.put(COL3, end);
+        values.put(COL2, dbLat);
+        values.put(COL3, dbLong);
 
         //get current date
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
@@ -85,6 +88,7 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
         values.put(COL7, frequencyNumber);
         values.put(COL8, frequencyType);
         values.put(COL9, contacts);
+        values.put(COL10, trip_name);
         long insertId = db.insert(TABLE_NAME, null, values);
         db.close();
 
