@@ -104,4 +104,18 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
         return cursor;
     }
+
+    public Cursor getAllTripNames(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select distinct " + COL10 + " from " + TABLE_NAME, null);
+
+        return cursor;
+    }
+
+    public Cursor getTripData(String tripName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * FROM " + TABLE_NAME + " WHERE " + COL10 + " = " + "\"" + tripName + "\"", null);
+
+        return cursor;
+    }
 }

@@ -11,24 +11,9 @@
     android:background="@color/lightGreen"
     tools:context="bcit.androidgpstracking.PreviousTrips">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        >
-
-        <LinearLayout
+        <ListView
+            android:id="@android:id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <ListView
-                android:id="@android:id/list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@android:layout/simple_list_item_multiple_choice"
-                />
-        </LinearLayout>
-    </ScrollView>
-
+            tools:listitem="@android:layout/simple_list_item_multiple_choice"/>
 </RelativeLayout>

@@ -40,7 +40,7 @@ public class MyLocationListener implements LocationListener {
 	}
 
 	public String getLastLocationTextMessage() {
-		return (formattedOutput.isEmpty()) ? "Haven't got a location yet" : formattedOutput;
+		return formattedOutput;
 	}
 
 	@Override

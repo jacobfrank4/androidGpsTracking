@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		output = (TextView) findViewById(R.id.textView);
 		db = new SQLiteDatabaseHelper(this);
-	}
+    }
 
 	public void goToActvity(final View view){
 		int buttonClicked = view.getId();
@@ -50,11 +50,11 @@ public class MainActivity extends AppCompatActivity {
 		switch(buttonClicked) {
 			case R.id.planTrip:
 				intent = new Intent(this, PlanTrip.class);
-				startActivity(intent);
+				startActivityForResult(intent, 2);
 				break;
 			case R.id.previousTrips:
-				//intent = new Intent(this, PreviousTrips.class);
-				//startActivity(intent);
+				intent = new Intent(this, PreviousTrips.class);
+				startActivity(intent);
 				break;
 			case R.id.tripView:
 				intent = new Intent(this, TripView.class);
@@ -79,28 +79,41 @@ public class MainActivity extends AppCompatActivity {
 				SQLiteDatabaseHelper.COL1 + " = " + tripID, null, null, null, null);
 
 		if (dateRange.moveToFirst()) {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 			try {
 				Date start = sdf.parse(dateRange.getString(0));
 				Date end = sdf.parse(dateRange.getString(1));
 
-				long duration = end.getTime() - start.getTime();
+				//Remove this if when validation is in place since all trips will have proper start and end times
+				long duration;
+				if (end.getTime() > start.getTime()) {
+					duration = end.getTime() - start.getTime();
+				} else {
+					duration = start.getTime() - end.getTime();
+				}
+
+				long minutes = duration / (1000 * 60);
+
+				Toast.makeText(output.getContext(), String.valueOf(duration), Toast.LENGTH_LONG).show();
+				Toast.makeText(output.getContext(), String.valueOf(duration / 1000), Toast.LENGTH_LONG).show();
+				Toast.makeText(output.getContext(), String.valueOf(duration / 60000), Toast.LENGTH_LONG).show();
+
 				long frequencyLength;
-				switch (dateRange.getString(4)) {
-					case "MINUTES":
+				switch (dateRange.getString(dateRange.getColumnIndex(SQLiteDatabaseHelper.COL8))) {
+					case "Minutes":
 						frequencyLength = 1000 * 60;
 						break;
-					case "HOURS":
+					case "Hours":
 						frequencyLength = 1000 * 60 * 60;
 						break;
-					case "DAYS":
+					case "Days":
 						frequencyLength = 1000 * 60 * 60 * 24;
 						break;
 					default:
 						frequencyLength = 1000 * 60 * 60;
 						break;
 				}
-				long tickLength = dateRange.getInt(3) * frequencyLength;
+				long tickLength = dateRange.getInt(dateRange.getColumnIndex(SQLiteDatabaseHelper.COL7)) * frequencyLength;
 
 				CountDownTimer cdt = new CountDownTimer(duration, tickLength) {
 					@Override
@@ -119,7 +132,9 @@ public class MainActivity extends AppCompatActivity {
 								if (contacts.moveToFirst()) {
 									List<String> numberList = Arrays.asList(contacts.getString(0).split("\\s*,\\s*"));
 									for (String number : numberList) {
-										smsManager.sendTextMessage(number, null, locationListener.getLastLocationTextMessage(), null, null);
+										if (!locationListener.getLastLocationTextMessage().isEmpty()) {
+											smsManager.sendTextMessage(number, null, locationListener.getLastLocationTextMessage(), null, null);
+										}
 									}
 								}
 								contacts.close();
@@ -129,18 +144,20 @@ public class MainActivity extends AppCompatActivity {
 
 					@Override
 					public void onFinish() {
-
+						Toast.makeText(output.getContext(), "Timer finished", Toast.LENGTH_LONG).show();
 					}
 				};
+				cdt.start();
 
 			} catch (Exception e) {
 				//Database contains badly formatted date strings
+				Toast.makeText(output.getContext(), "Exception", Toast.LENGTH_LONG).show();
 			}
 
 		} else {
 			//Database returned nothing
 		}
-
+		dateRange.close();
 	}
 
 	/*
@@ -185,6 +202,15 @@ public class MainActivity extends AppCompatActivity {
 			if (resultCode == Activity.RESULT_CANCELED) {
 				//Write your code if there's no result
 			}
+		} else if (requestCode == 2) {
+			if (resultCode == Activity.RESULT_OK) {
+				String tripID = String.valueOf(data.getIntExtra("ID", -1));
+				Toast.makeText(output.getContext(), "Got trip ID: " + tripID, Toast.LENGTH_SHORT).show();
+				tripMessageLoop(tripID);
+			}
+			if (resultCode == Activity.RESULT_CANCELED) {
+				//Write your code if there's no result
+			}
 		}
 	}
 
@@ -213,6 +239,22 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 	}
+
+    public void viewAllTrips(){
+        Cursor cursor = db.getAllTripNames();
+        if(cursor.getCount() == 0){
+            Log.d(TAG, "No data found in db");
+        }else{
+            StringBuffer buffer = new StringBuffer();
+            while(cursor.moveToNext()){
+                buffer.append("Trip Name: " + cursor.getString(0) + "\n");
+            }
+
+            showMessage("Data", buffer.toString());
+        }
+    }
+
+
 
 	public void viewAll(final View view){
 		Cursor cursor = db.getAllData();

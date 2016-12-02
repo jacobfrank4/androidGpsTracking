@@ -16,12 +16,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 
 
 public class PlanTrip extends AppCompatActivity {
@@ -304,15 +303,24 @@ public class PlanTrip extends AppCompatActivity {
 
 
 
-/*
-        if (db.insertData(trip_id, "", "", start, end, frequencyNumberInput, frequencyTypeInput, contactsInput, trip_name))
+            Intent intent = new Intent(this, MainActivity.class);
+
+            intent.putExtra("ID", trip_id);
+
+
+        if (db.insertData(trip_id, "", "", start, end, frequencyNumberInput, frequencyTypeInput, contactsInput, trip_name)) {
+
             Toast.makeText(this, "Insert successful", Toast.LENGTH_LONG).show();
-        else
+            setResult(RESULT_OK, intent);
+        } else {
             Toast.makeText(this, "Insert FAILED, YOUR WROONG", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, MainActivity.class);
+            setResult(RESULT_CANCELED, intent);
+        }
+
+
         finish();
-*/
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+/*        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try{
 
 
@@ -339,6 +347,7 @@ public class PlanTrip extends AppCompatActivity {
         }catch (Exception e){
             //Toast.makeText(this, "Exception creating validators", Toast.LENGTH_LONG).show();
         }
+*/
     }
 }
 

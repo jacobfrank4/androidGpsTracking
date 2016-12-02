@@ -8,7 +8,7 @@
 
     <string-array name="frequency_options">
         <item>Minutes</item>
-        <item>Hour</item>
-        <item>Day</item>
+        <item>Hours</item>
+        <item>Days</item>
     </string-array>
 </resources>
