@@ -1,14 +1,14 @@
 package bcit.androidgpstracking;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.app.ListActivity;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,16 +36,16 @@ public class PreviousTrips extends ListActivity {
 
         ArrayAdapter<String> listAdapter = new ArrayAdapter<>(this, R.layout.row_layout, R.id.listText, trips);
         setListAdapter(listAdapter);
-
     }
 
     public void getAllTrips(){
         Cursor cursor = db.getAllTripNames();
         if(cursor.getCount() == 0){
             Log.d(TAG, "No data found in db");
-        }else{
+            Toast.makeText(this, "No data available to display", Toast.LENGTH_LONG).show();
+        }else {
             StringBuffer tripBuffer = new StringBuffer();
-            while(cursor.moveToNext()){
+            while (cursor.moveToNext()) {
                 tripBuffer.append(cursor.getString(0));
                 trips.add(tripBuffer.toString());
                 tripBuffer.delete(0, tripBuffer.length());
