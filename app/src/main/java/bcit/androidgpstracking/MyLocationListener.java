@@ -52,11 +52,11 @@ public class MyLocationListener implements LocationListener {
 		lastLocationAccurate = loc.getAccuracy() < 50;
 		df = new DecimalFormat(("#.#####"));
 		Log.d(TAG, "TEST");
-		output.setText("");
-		Toast.makeText(
-				output.getContext(),
-				"Location changed: Lat: " + loc.getLatitude() + " Lng: "
-						+ loc.getLongitude() + "\n" + String.valueOf(loc.getAccuracy()), Toast.LENGTH_SHORT).show();
+		//output.setText("");
+//		Toast.makeText(
+//				output.getContext(),
+//				"Location changed: Lat: " + loc.getLatitude() + " Lng: "
+//						+ loc.getLongitude() + "\n" + String.valueOf(loc.getAccuracy()), Toast.LENGTH_SHORT).show();
 
 		//JF: Nov 13, 2016
 		//The raw double longitude and latitude variables.
@@ -110,7 +110,7 @@ public class MyLocationListener implements LocationListener {
 
 		formattedOutput = s;
 
-		output.setText(s);
+		//output.setText(s);
 	}
 
 	@Override

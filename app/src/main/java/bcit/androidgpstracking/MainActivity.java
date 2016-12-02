@@ -69,30 +69,31 @@ public class MainActivity extends AppCompatActivity {
 			tim.scheduleAtFixedRate(new TimerTask() {
 				@Override
 				public void run() {
-					//Looper.prepare();
-					//locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null);
-					locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
-					if (locationListener.getLocationAccurate()) {
-						locationManager.removeUpdates(locationListener);
-					}
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
+							if (locationListener.getLocationAccurate()) {
+								locationManager.removeUpdates(locationListener);
+								Toast.makeText(output.getContext(), "Removing updates", Toast.LENGTH_SHORT).show();
+							}
+							//Change where clause to current trip id instead of -1
+							Cursor contacts = db.getReadableDatabase().query(SQLiteDatabaseHelper.TABLE_NAME,
+									new String[]{SQLiteDatabaseHelper.COL9}, SQLiteDatabaseHelper.COL1 + " = -1", null, null, null, null);
 
-					//Change where clause to current trip id instead of -1
-					Cursor contacts = db.getReadableDatabase().query(SQLiteDatabaseHelper.TABLE_NAME,
-							new String[]{SQLiteDatabaseHelper.COL9}, SQLiteDatabaseHelper.COL1 + " = -1", null, null, null, null);
-
-					if (contacts.moveToFirst()) {
-						List<String> numberList = Arrays.asList(contacts.getString(0).split("\\s*,\\s*"));
-						for (String number : numberList) {
-							smsManager.sendTextMessage(number, null, locationListener.getLastLocationTextMessage(), null, null);
+							if (contacts.moveToFirst()) {
+								List<String> numberList = Arrays.asList(contacts.getString(0).split("\\s*,\\s*"));
+								for (String number : numberList) {
+									smsManager.sendTextMessage(number, null, locationListener.getLastLocationTextMessage(), null, null);
+								}
+							}
 						}
-					}
-					//Looper.loop();
+					});
 				}
-			}, 0, 1000 * 10);
+			}, 0, 1000 * 20);
 			timerActive = true;
 		}
-		//locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
-		parseForDB();
+		//parseForDB();
 	}
 
 	/*
