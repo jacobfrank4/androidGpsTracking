@@ -29,6 +29,7 @@ public class TripView extends FragmentActivity implements OnMapReadyCallback {
     SQLiteDatabaseHelper db;
     String trip;
     TableLayout tl;
+    TextView text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,8 @@ public class TripView extends FragmentActivity implements OnMapReadyCallback {
 
         Intent intent = getIntent();
         trip = intent.getStringExtra("tripName");
-
+        text = (TextView) findViewById(R.id.tripName);
+        text.setText(trip);
         addData();
     }
 
@@ -54,31 +56,27 @@ public class TripView extends FragmentActivity implements OnMapReadyCallback {
             Log.d(TAG, "No data found in db");
         }else{
             StringBuffer latlongbuff = new StringBuffer();
-            StringBuffer timebuff = new StringBuffer();
 
             while(cursor.moveToNext()){
 
                 TableRow row = new TableRow(this);
                 TextView latlong = new TextView(this);
-                TextView time = new TextView(this);
 
                 TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
                 row.setLayoutParams(lp);
+                if(!cursor.getString(2).isEmpty() && !cursor.getString(3).isEmpty()) {
+                    latlongbuff.append(cursor.getString(2)); //latitude
+                    latlongbuff.append("; "); //latitude
+                    latlongbuff.append(cursor.getString(3)); //longitude
 
-                timebuff.append(cursor.getString(4)); //date/time
-                latlongbuff.append(cursor.getString(2)); //latitude
-                latlongbuff.append("; "); //latitude
-                latlongbuff.append(cursor.getString(3)); //longitude
 
-                latlong.setText(latlongbuff);
-                time.setText(timebuff);
+                    latlong.setText(latlongbuff);
 
-                row.addView(latlong);
-                row.addView(time);
+                    row.addView(latlong);
 
-                tl.addView(row);
+                    tl.addView(row);                }
+
                 latlongbuff.delete(0, latlongbuff.length());
-                timebuff.delete(0, timebuff.length());
             }
         }
     }
@@ -106,7 +104,7 @@ public class TripView extends FragmentActivity implements OnMapReadyCallback {
         if(cursor.getCount() == 0){
             Log.d(TAG, "No data found in db");
         }else{
-            StringBuffer namebuff = new StringBuffer();
+            StringBuffer timebuff = new StringBuffer();
             StringBuffer latbuff = new StringBuffer();
             StringBuffer longbuff = new StringBuffer();
             String lat;
@@ -116,7 +114,7 @@ public class TripView extends FragmentActivity implements OnMapReadyCallback {
 
             while(cursor.moveToNext()){
 
-                namebuff.append(cursor.getString(10)); //trip name
+                timebuff.append(cursor.getString(4)); //trip name
                 latbuff.append(cursor.getString(2)); //latitude
                 longbuff.append(cursor.getString(3)); //longitude
 
@@ -148,10 +146,10 @@ public class TripView extends FragmentActivity implements OnMapReadyCallback {
 
                     // Add a trip marker
                     LatLng tripMarker = new LatLng(latitude,longitude);
-                    mMap.addMarker(new MarkerOptions().position(tripMarker).title(namebuff.toString()));
+                    mMap.addMarker(new MarkerOptions().position(tripMarker).title(timebuff.toString()));
                 }
 
-                namebuff.delete(0, namebuff.length());
+                timebuff.delete(0, timebuff.length());
                 latbuff.delete(0, latbuff.length());
                 longbuff.delete(0, longbuff.length());
             }

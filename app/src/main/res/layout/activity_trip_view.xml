@@ -4,7 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/lightGreen">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/tripName"
+        android:text="Trip Name"
+        android:layout_weight="9"
+        android:layout_marginBottom="2sp"
+        android:textSize="20sp"
+        android:gravity="center"/>
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -26,15 +37,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/gpsDataTable"
+            android:gravity="center"
+
             android:stretchColumns="1">
 
             <TableRow>
                 <TextView
                     android:text="Longitude; Latitude"
-                    android:gravity="center"
-                    android:padding="3dip" />
-                <TextView
-                    android:text="Time"
                     android:gravity="center"
                     android:padding="3dip" />
             </TableRow>
