@@ -34,19 +34,19 @@
         android:onClick="save"/>
 
     <TextView
-        android:text="tripStart"
+        android:text="Trip Start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tripStart"
+        android:id="@+id/tripStartView"
         android:layout_alignBaseline="@+id/startTime"
         android:layout_alignBottom="@+id/startTime"
         android:layout_alignParentEnd="true" />
 
     <TextView
-        android:text="tripEnd"
+        android:text="Trip End"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tripEnd"
+        android:id="@+id/tripEndView"
         android:layout_alignBaseline="@+id/endTime"
         android:layout_alignBottom="@+id/endTime"
         android:layout_alignParentEnd="true" />
@@ -59,7 +59,7 @@
         android:layout_alignParentEnd="true"
         android:text="Day/Hour"
         android:layout_toEndOf="@+id/endTime"
-        android:layout_alignStart="@+id/endDate" />
+        android:layout_alignStart="@+id/endTime" />
 
     <Button
         android:text="Start Date"
@@ -84,18 +84,6 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
 
-    <Button
-        android:text="End Date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/endDate"
-        android:textSize="20sp"
-        android:background="#0000"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="19dp"
-        android:layout_below="@+id/startTime"
-        android:layout_alignStart="@+id/startTime" />
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -109,6 +97,28 @@
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/startTime" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/trip_name"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:hint="Trip Name"/>
+
+    <Button
+        android:text="End Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/endDate"
+        android:textSize="20sp"
+        android:background="#0000"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="13dp"
+        android:layout_below="@+id/startDate"
+        android:layout_alignParentStart="true" />
+
     <Button
         android:text="End Time"
         android:layout_width="wrap_content"
@@ -119,17 +129,6 @@
         android:textColor="#FFFFFF"
         android:layout_alignBaseline="@+id/endDate"
         android:layout_alignBottom="@+id/endDate"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/startTime" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/trip_name"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:hint="Trip Name"/>
+        android:layout_alignStart="@+id/startTime" />
 
 </RelativeLayout>
