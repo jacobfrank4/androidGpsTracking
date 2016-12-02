@@ -5,10 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -17,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -62,21 +62,36 @@ public class MainActivity extends AppCompatActivity {
 
 
 	public void getGPS(final View view) {
-		final LocationListener locationListener = new MyLocationListener(output);
-
+		final MyLocationListener locationListener = new MyLocationListener(output);
+		final SmsManager smsManager = SmsManager.getDefault();
 		if (!timerActive) {
 			//Request single gps update every 5 seconds
 			tim.scheduleAtFixedRate(new TimerTask() {
 				@Override
 				public void run() {
-					Looper.prepare();
-					locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null);
-					Looper.loop();
+					//Looper.prepare();
+					//locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null);
+					locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
+					if (locationListener.getLocationAccurate()) {
+						locationManager.removeUpdates(locationListener);
+					}
+
+					//Change where clause to current trip id instead of -1
+					Cursor contacts = db.getReadableDatabase().query(SQLiteDatabaseHelper.TABLE_NAME,
+							new String[]{SQLiteDatabaseHelper.COL9}, SQLiteDatabaseHelper.COL1 + " = -1", null, null, null, null);
+
+					if (contacts.moveToFirst()) {
+						List<String> numberList = Arrays.asList(contacts.getString(0).split("\\s*,\\s*"));
+						for (String number : numberList) {
+							smsManager.sendTextMessage(number, null, locationListener.getLastLocationTextMessage(), null, null);
+						}
+					}
+					//Looper.loop();
 				}
-			}, 0, 1000 * 5);
+			}, 0, 1000 * 10);
 			timerActive = true;
 		}
-		//locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+		//locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
 		parseForDB();
 	}
 
@@ -106,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
 //			smsManager.sendTextMessage(phoneNumbers[i], null, message, null, null);
 //		}
 	}
-
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
