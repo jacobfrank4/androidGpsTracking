@@ -32,7 +32,7 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
     public static final String COL9 = "CONTACTS";
     public static final String COL10 = "TRIP_NAME";
 
-
+    public static int trip_id;
 
 
     public SQLiteDatabaseHelper (Context context){
