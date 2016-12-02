@@ -114,13 +114,13 @@ public class MainActivity extends AppCompatActivity {
 				}
 				long tickLength = dateRange.getInt(dateRange.getColumnIndex(SQLiteDatabaseHelper.COL7)) * frequencyLength;
 
+				final MyLocationListener locationListener = new MyLocationListener(output, tripID, db);
 				CountDownTimer cdt = new CountDownTimer(duration, tickLength) {
 					@Override
 					public void onTick(long l) {
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
-								MyLocationListener locationListener = new MyLocationListener(tripID, db);
 								locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
 								if (locationListener.getLocationAccurate()) {
 									locationManager.removeUpdates(locationListener);

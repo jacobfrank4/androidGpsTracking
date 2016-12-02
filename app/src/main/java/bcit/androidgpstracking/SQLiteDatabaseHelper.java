@@ -92,10 +92,7 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
         long insertId = db.insert(TABLE_NAME, null, values);
         db.close();
 
-        if(insertId == -1) {
-            return false;
-        }
-        return true;
+        return insertId != -1;
     }
 
     public Cursor getAllData(){
