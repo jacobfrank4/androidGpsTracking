@@ -1,5 +1,6 @@
 package bcit.androidgpstracking;
 
+import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -27,12 +28,12 @@ public class MyLocationListener implements LocationListener {
 	double rawLatidude;
 	boolean lastLocationAccurate = false;
 	String formattedOutput = new String();
+	String tripID;
+	SQLiteDatabaseHelper dbh;
 
-	public MyLocationListener() {
-	}
-
-	public MyLocationListener(TextView output) {
-		this.output = output;
+	public MyLocationListener(final String tripID, final SQLiteDatabaseHelper dbh) {
+		this.tripID = tripID;
+		this.dbh = dbh;
 	}
 
 	public boolean getLocationAccurate() {
@@ -109,6 +110,17 @@ public class MyLocationListener implements LocationListener {
 				formattedLatitude + "," + formattedLongitude;
 
 		formattedOutput = s;
+
+		Cursor prev = dbh.getWritableDatabase().query(SQLiteDatabaseHelper.TABLE_NAME,
+				new String[]{SQLiteDatabaseHelper.COL4, SQLiteDatabaseHelper.COL5,
+						SQLiteDatabaseHelper.COL6, SQLiteDatabaseHelper.COL7,
+						SQLiteDatabaseHelper.COL8, SQLiteDatabaseHelper.COL9, SQLiteDatabaseHelper.COL10},
+				SQLiteDatabaseHelper.COL1 + " = " + tripID, null, null, null, null);
+
+		prev.moveToFirst();
+
+		dbh.insertData(Integer.parseInt(tripID), String.valueOf(rawLatidude), String.valueOf(rawLongitude), prev.getString(0),
+				prev.getString(1), prev.getString(2), prev.getString(3), prev.getString(4), prev.getString(5));
 
 		//output.setText(s);
 	}

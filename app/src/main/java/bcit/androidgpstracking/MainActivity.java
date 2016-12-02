@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void tripMessageLoop(final String tripID) {
-		final MyLocationListener locationListener = new MyLocationListener(output);
 		final SmsManager smsManager = SmsManager.getDefault();
 
 		final SQLiteDatabase database = db.getReadableDatabase();
@@ -121,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
+								MyLocationListener locationListener = new MyLocationListener(tripID, db);
 								locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
 								if (locationListener.getLocationAccurate()) {
 									locationManager.removeUpdates(locationListener);
