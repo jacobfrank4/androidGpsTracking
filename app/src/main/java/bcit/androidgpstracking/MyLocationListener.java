@@ -1,7 +1,7 @@
 package bcit.androidgpstracking;
 
-import android.content.Context;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
@@ -10,8 +10,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -117,37 +115,33 @@ public class MyLocationListener implements LocationListener {
 
 		formattedOutput = s;
 
+		if (lastLocationAccurate) {
+			Cursor prev = dbh.getWritableDatabase().query(SQLiteDatabaseHelper.TABLE_NAME,
+					new String[]{SQLiteDatabaseHelper.COL5, SQLiteDatabaseHelper.COL6, SQLiteDatabaseHelper.COL7,
+							SQLiteDatabaseHelper.COL8, SQLiteDatabaseHelper.COL9, SQLiteDatabaseHelper.COL10},
+					SQLiteDatabaseHelper.COL1 + " = " + tripID, null, null, null, null);
 
-		Cursor prev = dbh.getWritableDatabase().query(SQLiteDatabaseHelper.TABLE_NAME,
-				new String[]{SQLiteDatabaseHelper.COL5, SQLiteDatabaseHelper.COL6, SQLiteDatabaseHelper.COL7,
-						SQLiteDatabaseHelper.COL8, SQLiteDatabaseHelper.COL9, SQLiteDatabaseHelper.COL10},
-				SQLiteDatabaseHelper.COL1 + " = " + tripID, null, null, null, null);
+			prev.moveToFirst();
 
-		prev.moveToFirst();
+			SQLiteDatabase db = dbh.getWritableDatabase();
+			ContentValues values = new ContentValues();
+			values.put(SQLiteDatabaseHelper.COL1, tripID);
+			values.put(SQLiteDatabaseHelper.COL2, formattedLatitude);
+			values.put(SQLiteDatabaseHelper.COL3, formattedLongitude);
 
-		SQLiteDatabase db = dbh.getWritableDatabase();
-		ContentValues values = new ContentValues();
-		values.put(SQLiteDatabaseHelper.COL1, tripID);
-		values.put(SQLiteDatabaseHelper.COL2, formattedLatitude);
-		values.put(SQLiteDatabaseHelper.COL3, formattedLongitude);
+			//get current date
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String date = sdf.format(new Date());
+			values.put(SQLiteDatabaseHelper.COL4, date);
 
-		//get current date
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String date = sdf.format(new Date());
-		values.put(SQLiteDatabaseHelper.COL4, date);
-
-		values.put(SQLiteDatabaseHelper.COL5, prev.getString(0));    //start
-		values.put(SQLiteDatabaseHelper.COL6, prev.getString(1));      //date
-		values.put(SQLiteDatabaseHelper.COL7, prev.getString(2));
-		values.put(SQLiteDatabaseHelper.COL8, prev.getString(3));
-		values.put(SQLiteDatabaseHelper.COL9, prev.getString(4));
-		values.put(SQLiteDatabaseHelper.COL10, prev.getString(5));
-		long insertId = db.insert(SQLiteDatabaseHelper.TABLE_NAME, null, values);
-
-//		dbh.insertData(Integer.parseInt(tripID), String.valueOf(rawLatidude), String.valueOf(rawLongitude), prev.getString(0),
-//				prev.getString(1), prev.getString(2), prev.getString(3), prev.getString(4), prev.getString(5));
-
-		//output.setText(s);
+			values.put(SQLiteDatabaseHelper.COL5, prev.getString(0));
+			values.put(SQLiteDatabaseHelper.COL6, prev.getString(1));
+			values.put(SQLiteDatabaseHelper.COL7, prev.getString(2));
+			values.put(SQLiteDatabaseHelper.COL8, prev.getString(3));
+			values.put(SQLiteDatabaseHelper.COL9, prev.getString(4));
+			values.put(SQLiteDatabaseHelper.COL10, prev.getString(5));
+			db.insert(SQLiteDatabaseHelper.TABLE_NAME, null, values);
+		}
 	}
 
 	@Override
