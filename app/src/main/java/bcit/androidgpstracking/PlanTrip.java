@@ -16,11 +16,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class PlanTrip extends AppCompatActivity {
@@ -39,6 +40,12 @@ public class PlanTrip extends AppCompatActivity {
 
     TextView startView;
     TextView endView;
+    TextView startValidateView;
+    TextView endValidateView;
+    TextView currValidateView;
+
+    int currYear, currMonth, currDay;
+    int currHour, currMinute;
 
     int startYear, startMonth, startDay;
     int startHour, startMinute;
@@ -72,6 +79,12 @@ public class PlanTrip extends AppCompatActivity {
         db = new SQLiteDatabaseHelper(this);
 
         final Calendar cal = Calendar.getInstance();
+        currYear = cal.get(Calendar.YEAR);
+        currMonth = cal.get(Calendar.MONTH) + 1;   //plus one because month starts at 0
+        currDay = cal.get(Calendar.DAY_OF_MONTH);
+        currHour = cal.get(Calendar.HOUR_OF_DAY);
+        currMinute = cal.get(Calendar.MINUTE);
+
         startYear = cal.get(Calendar.YEAR);
         startMonth = cal.get(Calendar.MONTH) + 1;   //plus one because month starts at 0
         startDay = cal.get(Calendar.DAY_OF_MONTH);
@@ -85,6 +98,13 @@ public class PlanTrip extends AppCompatActivity {
         tripNameEdit = (EditText) findViewById(R.id.trip_name);
         startView = (TextView) findViewById(R.id.tripStartView);
         endView = (TextView) findViewById(R.id.tripEndView);
+
+        startValidateView = (TextView) findViewById(R.id.startValidate);
+        endValidateView = (TextView) findViewById(R.id.endValidate);
+        currValidateView = (TextView) findViewById(R.id.currValidate);
+        startValidateView.setText(startYear + " " + startMonth + " " + startDay);
+        endValidateView.setText(endYear + " " + endMonth + " " + endDay);
+        currValidateView.setText(currYear + " " + currMonth + " " + currDay);
 
         //default frequencyType
         frequencyTypeInput = "hour";
@@ -124,13 +144,14 @@ public class PlanTrip extends AppCompatActivity {
                     public void onClick(View v) {
                         showDialog(DIALOG_START_DATE);
                         startDateInput = startYear + "/" + startMonth + "/" + startDay;
-                        //Toast.makeText(PlanTrip.this, startYear + "/" + startMonth + "/" + startDay, Toast.LENGTH_LONG).show();
-                        Toast.makeText(PlanTrip.this, "showD start: " + startDateInput, Toast.LENGTH_LONG).show();
                         startView.setText(startDateInput);
+                        //Toast.makeText(PlanTrip.this, "showD start: " + startDateInput, Toast.LENGTH_LONG).show();
+
                     }
                 }
         );
     }
+
     public void endShowDialogOnButtonClick(){
         endDate.setOnClickListener(
                 new View.OnClickListener(){
@@ -138,8 +159,8 @@ public class PlanTrip extends AppCompatActivity {
                     public void onClick(View v){
                         showDialog(DIALOG_END_DATE);
                         endDateInput = endYear + "/" + endMonth + "/" + endDay;
-                        Toast.makeText(PlanTrip.this, "showD end: " + endYear + "/" + endMonth + "/" + endDay, Toast.LENGTH_LONG).show();
                         endView.setText(endDateInput);
+//                        Toast.makeText(PlanTrip.this, "showD end: " + endYear + "/" + endMonth + "/" + endDay, Toast.LENGTH_LONG).show();
                     }
                 }
         );
@@ -155,7 +176,7 @@ public class PlanTrip extends AppCompatActivity {
                     public void onClick(View v) {
                         showDialog(DIALOG_START_TIME);
                         startTimeInput = startHour + ":" + startMinute;
-                        Toast.makeText(PlanTrip.this, "showT start: " + startTimeInput, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(PlanTrip.this, "showT start: " + startTimeInput, Toast.LENGTH_LONG).show();
                     }
                 }
         );
@@ -167,7 +188,7 @@ public class PlanTrip extends AppCompatActivity {
                     public void onClick(View v){
                         showDialog(DIALOG_END_TIME);
                         endTimeInput = endHour + ":" + endMinute;
-                        Toast.makeText(PlanTrip.this, "showT end: " + endTimeInput, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(PlanTrip.this, "showT end: " + endTimeInput, Toast.LENGTH_LONG).show();
                     }
                 }
         );
@@ -195,7 +216,7 @@ public class PlanTrip extends AppCompatActivity {
             startYear = year;
             startMonth = month + 1;
             startDay = day;
-            Toast.makeText(PlanTrip.this, startYear + "/" + startMonth + "/" + startDay, Toast.LENGTH_LONG).show();
+//            Toast.makeText(PlanTrip.this, startYear + "/" + startMonth + "/" + startDay, Toast.LENGTH_LONG).show();
         }
     };
 
@@ -207,7 +228,7 @@ public class PlanTrip extends AppCompatActivity {
             endYear = year;
             endMonth = month + 1;
             endDay = day;
-            Toast.makeText(PlanTrip.this, endYear + "/" + endMonth + "/" + endDay, Toast.LENGTH_LONG).show();
+//            Toast.makeText(PlanTrip.this, endYear + "/" + endMonth + "/" + endDay, Toast.LENGTH_LONG).show();
         }
     };
 
@@ -218,7 +239,7 @@ public class PlanTrip extends AppCompatActivity {
         public void onTimeSet(TimePicker timePicker, int hour, int minute) {
             startHour = hour;
             startMinute = minute;
-            Toast.makeText(PlanTrip.this, startHour + ":" + startMinute, Toast.LENGTH_LONG).show();
+//            Toast.makeText(PlanTrip.this, startHour + ":" + startMinute, Toast.LENGTH_LONG).show();
         }
     };
 
@@ -229,7 +250,7 @@ public class PlanTrip extends AppCompatActivity {
         public void onTimeSet(TimePicker timePicker, int hour, int minute) {
             endHour = hour;
             endMinute = minute;
-            Toast.makeText(PlanTrip.this, endHour + ":" + endMinute, Toast.LENGTH_LONG).show();
+//            Toast.makeText(PlanTrip.this, endHour + ":" + endMinute, Toast.LENGTH_LONG).show();
         }
     };
 
@@ -281,12 +302,43 @@ public class PlanTrip extends AppCompatActivity {
 
         trip_name = tripNameEdit.getText().toString();
 
-        if(db.insertData(trip_id, "", "", start, end, frequencyNumberInput, frequencyTypeInput, contactsInput, trip_name))
+
+
+/*
+        if (db.insertData(trip_id, "", "", start, end, frequencyNumberInput, frequencyTypeInput, contactsInput, trip_name))
             Toast.makeText(this, "Insert successful", Toast.LENGTH_LONG).show();
         else
             Toast.makeText(this, "Insert FAILED, YOUR WROONG", Toast.LENGTH_LONG).show();
-        Intent intent =  new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         finish();
+*/
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        try{
+
+
+            Date startValidate = sdf.parse(startYear + "-" + startMonth + "-" + startDay + " " + startHour + ":" + startMinute);
+            Date endValidate = sdf.parse(endYear + "-" + endMonth + "-" + endDay + " " + endHour + ":" + endMinute);
+            Date currValidate = new Date();
+
+            startValidateView.setText(startValidate.toString());
+            endValidateView.setText(endValidate.toString());
+            currValidateView.setText(currValidate.toString());
+
+            if(currValidate.compareTo(startValidate) < 0){
+                //Toast.makeText(this, "valid\n" + "Curr: " + currValidate + "\nstart: " + startValidate + "\nStart year: " + startYear, Toast.LENGTH_LONG).show();
+                if(startValidate.compareTo(endValidate) < 0){
+                    //Toast.makeText(this, "valid\n" + "Start: " + startValidate + "\nend: " + endValidate, Toast.LENGTH_LONG).show();
+                }
+                else{
+                    //Toast.makeText(this, "invalid\n" + "start: " + startValidate + "\nend: " + endValidate, Toast.LENGTH_LONG).show();
+                }
+            }
+            else{
+                //Toast.makeText(this, "invalid\n" + "Curr: " + currValidate + "\nstart: " + startValidate, Toast.LENGTH_LONG).show();
+            }
+        }catch (Exception e){
+            //Toast.makeText(this, "Exception creating validators", Toast.LENGTH_LONG).show();
+        }
     }
 }
 
