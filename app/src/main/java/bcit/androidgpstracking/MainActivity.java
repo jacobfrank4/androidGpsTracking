@@ -143,8 +143,9 @@ public class MainActivity extends AppCompatActivity {
 		if(temp.length < 3) {
 			Toast.makeText(this, "Not enough data coming from Location Listener: " + output.getText().toString(), Toast.LENGTH_LONG).show();
 		} else{
-			if(db.insertData(1, temp[1], temp[3], "", "", "1", "", "")){
-				Toast.makeText(this, "insert success", Toast.LENGTH_LONG).show();
+			//if(db.insertData(1, temp[1], temp[3], "", "", "1", "", "", "")){
+			if(db.insertData(1, "567.123N", "123.123W", "", "", "1", "", "", "")){
+					Toast.makeText(this, "insert success", Toast.LENGTH_LONG).show();
 			}else{
 				Toast.makeText(this, "insert failed", Toast.LENGTH_LONG).show();
 			}
@@ -158,16 +159,18 @@ public class MainActivity extends AppCompatActivity {
 		}else{
 			StringBuffer buffer = new StringBuffer();
 			while(cursor.moveToNext()){
-				buffer.append("ID: " + cursor.getString(0) + "\n"); //id
-				buffer.append("TRIP ID: " + cursor.getString(1) + "\n"); //trip id
-				buffer.append("Date/Time: " + cursor.getString(4) + "\n"); //date/time
-				buffer.append("Lat: " + cursor.getString(2) + "\n"); //latitude
-				buffer.append("Long: " + cursor.getString(3) + "\n"); //longitude
-				buffer.append("Start: " + cursor.getString(5) + "\n"); //longitude
-				buffer.append("End: " + cursor.getString(6) + "\n"); //longitude
-				buffer.append("Frequency Number: " + cursor.getString(7) + "\n"); //longitude
-				buffer.append("Frequency Type: " + cursor.getString(8) + "\n"); //longitude
-				buffer.append("Contacts: " + cursor.getString(9) + "\n\n\n"); //longitude
+				buffer.append("ID: " + cursor.getString(0) + "\n");
+				buffer.append("TRIP ID: " + cursor.getString(1) + "\n");
+				buffer.append("Trip Name: " + cursor.getString(10) + "\n"); //trip name
+				buffer.append("Date/Time: " + cursor.getString(4) + "\n");
+				buffer.append("Lat: " + cursor.getString(2) + "\n");
+				buffer.append("Long: " + cursor.getString(3) + "\n");
+				buffer.append("Start: " + cursor.getString(5) + "\n");
+				buffer.append("End: " + cursor.getString(6) + "\n");
+				buffer.append("Frequency Number: " + cursor.getString(7) + "\n");
+				buffer.append("Frequency Type: " + cursor.getString(8) + "\n");
+				buffer.append("Contacts: " + cursor.getString(9) + "\n\n\n");
+
 			}
 
 			showMessage("Data", buffer.toString());

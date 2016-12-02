@@ -32,6 +32,7 @@ public class PlanTrip extends AppCompatActivity {
     Spinner frequencyTypeSpinner;
     Button contacts;
     Button save;
+    EditText tripNameEdit;
 
     int startYear, startMonth, startDay;
     int startHour, startMinute;
@@ -48,7 +49,8 @@ public class PlanTrip extends AppCompatActivity {
     String frequencyNumberInput;
     String frequencyTypeInput;
     String contactsInput;
-    int tripName = 2;
+    int trip_id = 2;
+    String trip_name;
 
     static final int DIALOG_START_DATE = 0;
     static final int DIALOG_END_DATE = 0;
@@ -74,6 +76,7 @@ public class PlanTrip extends AppCompatActivity {
 
         //default frequencyNumber
         frequencyNumber = (EditText) findViewById(R.id.frequencyNumber);
+        tripNameEdit = (EditText) findViewById(R.id.trip_name);
 
         //default frequencyType
         //frequencyTypeInput = "hour";
@@ -220,8 +223,9 @@ public class PlanTrip extends AppCompatActivity {
         start =  startDateInput + " " + startTimeInput;
         end = endDateInput + " " + endTimeInput;
 
-//        db.insertData(tripName, "", "", start, end, frequencyNumberInput, frequencyTypeInput, contactsInput);
-        if(db.insertData(tripName, "-1", "-1", start, end, frequencyNumberInput, frequencyTypeInput, contactsInput))
+        trip_name = tripNameEdit.getText().toString();
+
+        if(db.insertData(trip_id, "", "", start, end, frequencyNumberInput, frequencyTypeInput, contactsInput, trip_name))
             Toast.makeText(this, "Insert successful", Toast.LENGTH_LONG).show();
         else
             Toast.makeText(this, "Insert FAILED, YOUR WROONG", Toast.LENGTH_LONG).show();
